@@ -152,3 +152,124 @@ router.delete('/inventoryTable', function(req, res){
         res.end(JSON.stringify(result));
     });
 });
+
+
+
+
+
+
+//GET
+// /orderDetail/{orderId}
+router.get('/orderDetail/:orderID', function (req, res) {
+    var orderID = req.param('orderID');
+	con.query("SELECT * FROM orderDetails WHERE orderID = ?", orderID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+// /restaurant
+router.get('/restaurant', function (req, res) {
+	con.query("SELECT * FROM restaurant",function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+// /restaurant/{restaurantID}
+router.get('/restaurant/:restaurantID', function (req, res) {
+    var restaurantID = req.param('restaurantID');
+	con.query("SELECT * FROM restaurant WHERE restaurantID = ?", restaurantID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+// /productTable
+router.get('/productTable', function (req, res) {
+	con.query("SELECT * FROM productTable",function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
+//PUT
+// /orderDetail/{orderId}
+router.put('/orderDetail/:orderID', async (req, res) => {
+	var newQuantity = req.body.newQuantity
+	var orderID = req.param('orderID');
+
+	 con.query("UPDATE orderDetail SET Quantity = ? WHERE orderID = ?", [newQuantity, orderId] ,function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	 });
+});
+
+///restaurant/{restaurantID}
+router.put('/restaurant/:restaurantID', async (req, res) => {
+	var newActivity = req.body.newActivity
+	var restaurantID = req.param('restaurantID');
+
+	 con.query("UPDATE restaurant SET Activity = ? WHERE restaurantID = ?", [newActivity, restaurantID] ,function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	 });
+});
+
+
+//POST 
+
+// /restaurant
+router.post('/restaurant', async (req, res) => {
+    var restaurantID = req.body.restaurantID
+    var name = req.body.name
+    var dateJoined = req.body.dateJoined 
+    var active = req.body.active
+    
+      con.query("INSERT INTO restaurant (restaurantID, name, dateJoined, active) VALUES (?, ?, ?, ?)", [restaurantID, name, dateJoined, active],function (err, result, fields) {
+          if (err) throw err;
+          res.end(JSON.stringify(result)); // Result in JSON format
+      });
+  });
+
+
+// /productTable
+router.post('/productTable', async (req, res) => {
+    var productID = req.body.restaurantID
+    var name = req.body.name
+    var description = req.body.dateJoined 
+    var image = req.body.active
+    var minVal = req.body.minVal
+    
+      con.query("INSERT INTO productTable (productID, name, description, image, minVal) VALUES (?, ?, ?, ?, ?)", [productID, name, description, image, minVal ],function (err, result, fields) {
+          if (err) throw err;
+          res.end(JSON.stringify(result)); // Result in JSON format
+      });
+  });
+
+
+// DELETE
+
+// /orderDetail/{orderId}
+router.delete('/orderDetail/:orderID', async (req, res) => {
+	var orderID = req.param('orderID');
+  
+	con.query("DELETE FROM orderDetails WHERE orderID = ? ", orderID,function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); 
+	  });
+});
+
+
+
+// /restaurant/{restaurantID}
+router.delete('/restaurant/:restaurantID', async (req, res) => {
+	var restaurantID = req.param('restaurantID');
+  
+	con.query("DELETE FROM restaurant WHERE restaurantID = ? ", restaurantID,function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); 
+	  });
+});
+
