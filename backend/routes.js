@@ -96,3 +96,59 @@ module.exports = function routes(app, logger) {
     });
   });
 }
+app.use('/get', router);
+
+router.get('/inventoryTable', function (req, res) {
+	con.query("SELECT * FROM inventoryTable", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+router.get('/inventoryTable/:restaurantID', function(req, res){
+    var restaurantID = req.param("restaurantID");
+    con.query("SELECT * FROM inventoryTable WHERE restaurant ID = ?", restaurantID, function(err, result, fields){
+        if(err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+router.get('/inventoryTable/:productID', function(req, res){
+    var productID = req.param("productID");
+    con.query("SELCT * FROM inventoryTable WHERE productID = ?", productID, function(err, result, fields){
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+router.get('/orderDetails', function (req, res) {
+	con.query("SELECT * FROM orderDetails", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+app.use('/put', router);
+router.put('/inventoryTable', function(req, res){
+    con.query("UPDATE inventoryTable SET stock=? WHERE restaurantID=?", [req.body.stock, req.body.restaurantID], function(err, result, fields){
+        if(err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+app.use('/post', router)
+router.put('/inventoryTable', function(req, res){
+    con.query("INSERT INTO inventoryTable(restaurantID, productID, stock) VALUES(?)", [req.body.restaurantID, req.body.productID, req.body.stock], function(err, result, fields){
+        if(err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+router.put('/orderDetails', function(req, res){
+    con.query("INSERT INTO orderDetails(orderID, productID, quantity) VALUES(?)", [req.body.orderID, req.body.productID, req.body.quantity], function(err, result, fields){
+        if(err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+app.use('/delete', router)
+router.delete('/inventoryTable', function(req, res){
+    con.query("DELETE FROM inventoryTable WHERE restaurantID=? && productID=?", [req.body.restaurantID, req.body.productID], function(err, result, fields){
+        if(err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
