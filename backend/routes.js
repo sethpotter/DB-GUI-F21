@@ -125,12 +125,14 @@ app.get('/orderDetails', function (req, res) {
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
+
 app.put('/inventoryTable', function(req, res){
     con.query("UPDATE inventoryTable SET stock=? WHERE restaurantID=?", [req.body.stock, req.body.restaurantID], function(err, result, fields){
         if(err) throw err;
         res.end(JSON.stringify(result));
     });
 });
+
 app.put('/inventoryTable', function(req, res){
     con.query("INSERT INTO inventoryTable(restaurantID, productID, stock) VALUES(?)", [req.body.restaurantID, req.body.productID, req.body.stock], function(err, result, fields){
         if(err) throw err;
@@ -143,6 +145,7 @@ app.put('/orderDetails', function(req, res){
         res.end(JSON.stringify(result));
     });
 });
+
 app.delete('/inventoryTable', function(req, res){
     con.query("DELETE FROM inventoryTable WHERE restaurantID=? && productID=?", [req.body.restaurantID, req.body.productID], function(err, result, fields){
         if(err) throw err;
@@ -157,7 +160,7 @@ app.delete('/inventoryTable', function(req, res){
 
 //GET
 // /orderDetail/{orderId}
-router.get('/orderDetail/:orderID', function (req, res) {
+app.get('/orderDetail/:orderID', function (req, res) {
     var orderID = req.param('orderID');
 	con.query("SELECT * FROM orderDetails WHERE orderID = ?", orderID, function (err, result, fields) {
 		if (err) throw err;
@@ -166,7 +169,7 @@ router.get('/orderDetail/:orderID', function (req, res) {
 });
 
 // /restaurant
-router.get('/restaurant', function (req, res) {
+app.get('/restaurant', function (req, res) {
 	con.query("SELECT * FROM restaurant",function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -174,7 +177,7 @@ router.get('/restaurant', function (req, res) {
 });
 
 // /restaurant/{restaurantID}
-router.get('/restaurant/:restaurantID', function (req, res) {
+app.get('/restaurant/:restaurantID', function (req, res) {
     var restaurantID = req.param('restaurantID');
 	con.query("SELECT * FROM restaurant WHERE restaurantID = ?", restaurantID, function (err, result, fields) {
 		if (err) throw err;
@@ -183,7 +186,7 @@ router.get('/restaurant/:restaurantID', function (req, res) {
 });
 
 // /productTable
-router.get('/productTable', function (req, res) {
+app.get('/productTable', function (req, res) {
 	con.query("SELECT * FROM productTable",function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -193,7 +196,7 @@ router.get('/productTable', function (req, res) {
 
 //PUT
 // /orderDetail/{orderId}
-router.put('/orderDetail/:orderID', async (req, res) => {
+app.put('/orderDetail/:orderID', async (req, res) => {
 	var newQuantity = req.body.newQuantity
 	var orderID = req.param('orderID');
 
@@ -204,7 +207,7 @@ router.put('/orderDetail/:orderID', async (req, res) => {
 });
 
 ///restaurant/{restaurantID}
-router.put('/restaurant/:restaurantID', async (req, res) => {
+app.put('/restaurant/:restaurantID', async (req, res) => {
 	var newActivity = req.body.newActivity
 	var restaurantID = req.param('restaurantID');
 
@@ -218,7 +221,7 @@ router.put('/restaurant/:restaurantID', async (req, res) => {
 //POST 
 
 // /restaurant
-router.post('/restaurant', async (req, res) => {
+app.post('/restaurant', async (req, res) => {
     var restaurantID = req.body.restaurantID
     var name = req.body.name
     var dateJoined = req.body.dateJoined 
@@ -232,7 +235,7 @@ router.post('/restaurant', async (req, res) => {
 
 
 // /productTable
-router.post('/productTable', async (req, res) => {
+app.post('/productTable', async (req, res) => {
     var productID = req.body.restaurantID
     var name = req.body.name
     var description = req.body.dateJoined 
@@ -249,7 +252,7 @@ router.post('/productTable', async (req, res) => {
 // DELETE
 
 // /orderDetail/{orderId}
-router.delete('/orderDetail/:orderID', async (req, res) => {
+app.delete('/orderDetail/:orderID', async (req, res) => {
 	var orderID = req.param('orderID');
   
 	con.query("DELETE FROM orderDetails WHERE orderID = ? ", orderID,function (err, result, fields) {
@@ -261,7 +264,7 @@ router.delete('/orderDetail/:orderID', async (req, res) => {
 
 
 // /restaurant/{restaurantID}
-router.delete('/restaurant/:restaurantID', async (req, res) => {
+app.delete('/restaurant/:restaurantID', async (req, res) => {
 	var restaurantID = req.param('restaurantID');
   
 	con.query("DELETE FROM restaurant WHERE restaurantID = ? ", restaurantID,function (err, result, fields) {
