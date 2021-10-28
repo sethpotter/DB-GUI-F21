@@ -95,7 +95,7 @@ module.exports = function routes(app, logger) {
       }
     });
   });
-}
+
 
 
 app.get('/inventoryTable', function (req, res) {
@@ -272,4 +272,4 @@ app.delete('/restaurant/:restaurantID', async (req, res) => {
 		res.end(JSON.stringify(result)); 
 	  });
 });
-
+}
