@@ -2,7 +2,7 @@ name: CI Script
 on: [push]
 
 jobs:
-  # Deploy Process
+  # Deploy Processs
   deploy:
     runs-on: ubuntu-latest 
     steps:   
