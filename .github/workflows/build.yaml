@@ -2,7 +2,7 @@ name: CI Script
 on: [push]
 
 jobs:
-  # Deploy Processs
+  # Deploy Process
   deploy:
     timeout-minutes: 1
     runs-on: ubuntu-latest 
