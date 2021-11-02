@@ -37,9 +37,8 @@ jobs:
             #Now we have got the access of EC2 and we will start the deploy .
             cd ~/DB-GUI-F21 &&
             git checkout main &&
-            git fetch --all &&
-            git reset --hard origin/main &&
             git pull origin main &&
+            docker stop $(docker ps -a -q) && 
             docker-compose build &&
             docker-compose up -d
           '
