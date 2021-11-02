@@ -22,7 +22,7 @@ jobs:
 # Second job, which ssh into the ec2 and re-builds the docker container.
 # This job ONLY RUNS if deployment on GH-actions is successful.
   Deploy_to_EC2_AWS_instance:
-    needs: build
+    needs: Build_on_GH-Actions_to_Verify_Working_condition
     runs-on: ubuntu-latest
     
     steps:
