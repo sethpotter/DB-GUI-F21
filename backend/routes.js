@@ -3,7 +3,7 @@ const pool = require('./db')
 module.exports = function routes(app, logger) {
   // GET /
   app.get('/', (req, res) => {
-    res.status(200).send('This is the port for the API. Go to port 3000 to view the web page.');
+    res.status(200).send('This is the port for the API. Go to port 3000 to view the web page. Hello Alex');
   });
 
   // POST /reset
