@@ -10,13 +10,7 @@ jobs:
       uses: shimataro/ssh-key-action@v2.1.0
       with:
         key: $ { { secrets.SSH_KEY } }
-        known_hosts: github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2
-	A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIc
-	r6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzL
-	NnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6m
-	UoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJ
-	dsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJ
-	iS5ap43JXiUFFAaQ==
+        known_hosts: $ { { secrets.KNOWN_HOSTS } }
 
     - name: Execute test Script
       run: ssh ec2-user@ec2-18-220-1-169.us-east-2.compute.amazonaws.com bash updateEC2.sh
