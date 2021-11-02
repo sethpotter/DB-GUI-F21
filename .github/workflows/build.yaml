@@ -10,7 +10,7 @@ jobs:
       uses: shimataro/ssh-key-action@v2.1.0
       with:
         key: $ { { secrets.SSH_KEY } }
-        known_hosts: $ { { secrets.KNOWN_HOSTS } }
+        known_hosts: unnecessary
 
     - name: Execute test Script
       run: ssh ec2-user@ec2-18-220-1-169.us-east-2.compute.amazonaws.com bash updateEC2.sh
