@@ -1,35 +1,38 @@
 
 name: EC2 Re-Deploy
 
+# If we push to main branch then execute this actions script
 on:
   push:
     branches: [ main ]
 
 jobs:
-#First we will see the application build or not , then we will deploy in EC2
-  build:
+# First we will see the application builds or not on GH actions, then we will deploy in EC2
+  Build on GH-Actions to Verify Working condition:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
     
-    - name: Build the docker_compose
+    - name: Build using docker_compose
       run: docker-compose build
       
-    - name: Buid the application
+    - name: Run using compose up
       run: docker-compose up
-  Deploy:
+# Second job, which ssh into the ec2 and re-builds the docker container.
+# This job ONLY RUNS if deployment on GH-actions is successful.
+  Deploy to EC2 AWS instance:
     needs: build
     runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v2 
       - name: Deploy in EC2
-        env:
+        env: # These are the environment variables we need to connect
             PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
             HOSTNAME : ${{ secrets.HOSTNAME  }}
             USER_NAME : ${{ secrets.USER_NAME  }}
-            
+            # Run this command. Essentially we create a private key on the EC2, ssh into the instance, pull from github, close the docker containers we have, and then build and deploy the new version.
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
