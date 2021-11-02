@@ -8,7 +8,7 @@ on:
 
 jobs:
 # First we will see the application builds or not on GH actions, then we will deploy in EC2
-  Build on GH-Actions to Verify Working condition:
+  Build_on_GH-Actions_to_Verify_Working_condition:
     runs-on: ubuntu-latest
     
     steps:
@@ -21,7 +21,7 @@ jobs:
       run: docker-compose up
 # Second job, which ssh into the ec2 and re-builds the docker container.
 # This job ONLY RUNS if deployment on GH-actions is successful.
-  Deploy to EC2 AWS instance:
+  Deploy_to_EC2_AWS_instance:
     needs: build
     runs-on: ubuntu-latest
     
