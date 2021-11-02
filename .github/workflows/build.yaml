@@ -4,6 +4,7 @@ on: [push]
 jobs:
   # Deploy Processs
   deploy:
+    timeout-minutes: 1
     runs-on: ubuntu-latest 
     steps:   
     - name: Install SSH Key
