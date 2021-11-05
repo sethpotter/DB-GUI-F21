@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import DashboardPage from './Pages/Dashboard';
+import LoginPage from './Pages/Login';
+import SignUpPage from './Pages/SignUp';
+import OrderPage from './Pages/Order';
+import DeliveriesPage from './Pages/Deliveries';
+import StockPage from './Pages/Stock';
+import PrivateRoute from './Util/PrivateRoute';
 
 // React functional component
 function App () {
@@ -66,21 +74,37 @@ function App () {
     fetchVals();
   }, [])
 
+  // General routing for now until we figure out user types. (Supplier etc..)
+  // I will try to update the routing later to accommodate that.
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={fetchBase} style={{marginBottom: '1rem'}}> {`GET: http://${url}:8000/`} </button>
-        <button onClick={reset}> Reset DB </button>
-        <form onSubmit={handleSubmit}>
-          <input type="text" value={number} onChange={handleChange}/>
-          <br/>
-          <input type="submit" value="Submit" />
-        </form>
-        <ul>
-          { values.map((value, i) => <li key={i}>{value.value}</li>) }
-        </ul>
-      </header>
-    </div>
+	<>
+	<BrowserRouter>
+	  <Routes>
+	  	<Route path="/login" element={<LoginPage/>}/>
+		<Route path="/signup" element={<SignUpPage/>}/>
+		<Route path="/" element={
+			<PrivateRoute>
+			  <DashboardPage/>
+			</PrivateRoute>
+		}/>
+		<Route path="/order" element={
+			<PrivateRoute>
+				<OrderPage/>
+			</PrivateRoute>
+		}/>
+		<Route path="/deliveries" element={
+			<PrivateRoute>
+				<DeliveriesPage/>
+			</PrivateRoute>
+		}/>
+		<Route path="/stock" element={
+			<PrivateRoute>
+				<StockPage/>
+			</PrivateRoute>
+		}/>
+	  </Routes>
+	</BrowserRouter>
+	</>
   );
 }
 
