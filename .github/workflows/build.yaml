@@ -39,6 +39,12 @@ jobs:
           
             #Now we have got the access of EC2 and we will start the deploy .
             cd ~/DB-GUI-F21 &&
+            cd backend &&
+            npm install &&
+            cd .. &&
+            cd frontend &&
+            npm install &&
+            cd .. &&
             git checkout main &&
             git pull origin main &&
             docker stop $(docker ps -a -q) && 
