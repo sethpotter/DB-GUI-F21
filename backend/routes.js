@@ -385,7 +385,7 @@ module.exports = function routes(app, logger) {
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
-        connection.query('SELECT * FROM `db`.`user_table` WHERE userId = (?)', userId, function (err, rows, fields) {
+        connection.query('SELECT * FROM UserTable WHERE userId = (?)', userId, function (err, rows, fields) {
           connection.release();
           if (err) {
             logger.error("Error while fetching values: \n", err);
@@ -418,7 +418,7 @@ module.exports = function routes(app, logger) {
         var password = req.body.password;
         var userType = req.body.userType;
 
-        var query = 'UPDATE `db`.`user_table`' +
+        var query = 'UPDATE UserTable' +
                     'SET username = (?) ' 
                     'password = (?) ' +
                     'userType = (?) ' + 
