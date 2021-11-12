@@ -311,10 +311,10 @@ module.exports = function routes(app, logger) {
         // if there is an issue obtaining a connection, release the connection instance and log the error
         logger.error('Problem obtaining MySQL connection',err)
         res.status(400).send('Problem obtaining MySQL connection'); 
-      } else {
+      } else if(!req.params) {
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
-        connection.query('SELECT * FROM `db`.`user_table` ', function (err, rows, fields) {
+        connection.query('SELECT * FROM UserTable', function (err, rows, fields) {
           connection.release();
           if (err) {
             logger.error("Error while fetching values: \n", err);
@@ -348,7 +348,7 @@ module.exports = function routes(app, logger) {
         var usertype = req.body.usertype;
 
 
-        var query = 'INSERT INTO `db`.`user_table`(username, password, userType)' +
+        var query = 'INSERT INTO UserTable(username, password, userType)' +
                     'VALUES ((?)(?)(?))';
 
         // if there is no issue obtaining a connection, execute query and release connection
