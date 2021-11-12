@@ -9,6 +9,7 @@ on:
 jobs:
 # First we will see the application builds or not on GH actions, then we will deploy in EC2
   Build_on_GH-Actions_to_Verify_Working_condition:
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     
     steps:
@@ -22,6 +23,7 @@ jobs:
 # Second job, which ssh into the ec2 and re-builds the docker container.
 # This job ONLY RUNS if deployment on GH-actions is successful.
   Deploy_to_EC2_AWS_instance:
+    timeout-minutes: 3
     needs: Build_on_GH-Actions_to_Verify_Working_condition
     runs-on: ubuntu-latest
     
@@ -46,6 +48,7 @@ jobs:
             npm install &&
             cd .. &&
             git checkout main &&
+            git stash &&
             git pull origin main &&
             docker stop $(docker ps -a -q) && 
             docker-compose build &&
