@@ -331,10 +331,10 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-            res.status(200).json({
-		res.end(JSON.stringify(result)); // Result in JSON format
+           // res.status(200).json({
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //              "data": JSON.stringify(rows)});
-//            }
+          }
         });
       }
     });
@@ -372,7 +372,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -448,7 +448,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -481,7 +481,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -491,34 +491,36 @@ module.exports = function routes(app, logger) {
   });
 
 
-app.get('/inventoryTable', function (req, res) {
+app.get('/allInventory', function (req, res) {
     pool.getConnection(function (err, con){
-	con.query("SELECT * FROM inventoryTable", function (err, result, fields) {
+	con.query("SELECT * FROM InventoryTable", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
     });
 });
 
-app.get('/inventoryTable/:restaurantID', function(req, res){
+// /inventoryTable/{restaurantID}
+app.get('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
         var restaurantID = req.param("restaurantID");
-        con.query("SELECT * FROM inventoryTable WHERE restaurant ID = ?", restaurantID, function(err, result, fields){
+        con.query("SELECT * FROM InventoryTable WHERE restaurantID = (?)", restaurantID, function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
         });
     });
 });
-app.get('/inventoryTable/:productID', function(req, res){
+// /inventoryTable/{productID}
+app.get('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
         var productID = req.param("productID");
-        con.query("SELCT * FROM inventoryTable WHERE productID = ?", productID, function(err, result, fields){
+        con.query("SELCT * FROM InventoryTable WHERE productID = (?)", productID, function(err, result, fields){
             if (err) throw err;
             res.end(JSON.stringify(result));
 	});
     });
 });
-app.get('/orderDetails', function (req, res) {
+app.get('/allOrderDetails', function (req, res) {
     pool.getConnection(function (err, con){
 	con.query("SELECT * FROM OrderDetails", function (err, result, fields) {
 		if (err) throw err;
@@ -529,7 +531,7 @@ app.get('/orderDetails', function (req, res) {
 
 app.put('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("UPDATE inventoryTable SET stock=? WHERE restaurantID=?", [req.body.stock, req.body.restaurantID], function(err, result, fields){
+        con.query("UPDATE InventoryTable SET stock=? WHERE restaurantID= (?)", [req.body.stock, req.body.restaurantID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
@@ -538,7 +540,7 @@ app.put('/inventoryTable', function(req, res){
 
 app.put('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("INSERT INTO inventoryTable(restaurantID, productID, stock) VALUES(?)", [req.body.restaurantID, req.body.productID, req.body.stock], function(err, result, fields){
+        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock) VALUES(?)", [req.body.restaurantID, req.body.productID, req.body.stock], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
@@ -555,7 +557,7 @@ app.put('/orderDetails', function(req, res){
 
 app.delete('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("DELETE FROM inventoryTable WHERE restaurantID=? && productID=?", [req.body.restaurantID, req.body.productID], function(err, result, fields){
+        con.query("DELETE FROM InventoryTable WHERE restaurantID= (?) && productID= (?)", [req.body.restaurantID, req.body.productID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
@@ -569,10 +571,10 @@ app.delete('/inventoryTable', function(req, res){
 
 //GET
 // /orderDetail/{orderId}
-app.get('/orderDetail/:orderID', function (req, res) {
+app.get('/orderDetail', function (req, res) {
     pool.getConnection(function (err, con){
         var orderID = req.param('orderID');
-       	con.query("SELECT * FROM orderDetails WHERE orderID = ?", orderID, function (err, result, fields) {
+       	con.query("SELECT * FROM orderDetails WHERE orderID = (?)", orderID, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -590,10 +592,10 @@ app.get('/restaurant', function (req, res) {
 });
 
 // /restaurant/{restaurantID}
-app.get('/restaurant/:restaurantID', function (req, res) {
+app.get('/restaurant', function (req, res) {
     pool.getConnection(function (err, con){
         var restaurantID = req.param('restaurantID');
-	con.query("SELECT * FROM restaurant WHERE restaurantID = ?", restaurantID, function (err, result, fields) {
+	con.query("SELECT * FROM restaurant WHERE restaurantID = (?)", restaurantID, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -601,7 +603,7 @@ app.get('/restaurant/:restaurantID', function (req, res) {
 });
 
 // /productTable
-app.get('/productTable', function (req, res) {
+app.get('/allProductTable', function (req, res) {
     pool.getConnection(function (err, con){
 	con.query("SELECT * FROM productTable",function (err, result, fields) {
 		if (err) throw err;
@@ -613,12 +615,12 @@ app.get('/productTable', function (req, res) {
 
 //PUT
 // /orderDetail/{orderId}
-app.put('/orderDetail/:orderID', async (req, res) => {
+app.put('/orderDetail', async (req, res) => {
     pool.getConnection(function (err, con){
 	var newQuantity = req.body.newQuantity
 	var orderID = req.param('orderID');
 
-	 con.query("UPDATE orderDetail SET Quantity = ? WHERE orderID = ?", [newQuantity, orderId] ,function (err, result, fields) {
+	 con.query("UPDATE orderDetail SET Quantity = (?) WHERE orderID = (?)", [newQuantity, orderId] ,function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	 });
@@ -626,12 +628,12 @@ app.put('/orderDetail/:orderID', async (req, res) => {
 });
 
 ///restaurant/{restaurantID}
-app.put('/restaurant/:restaurantID', async (req, res) => {
+app.put('/restaurant', async (req, res) => {
     pool.getConnection(function (err, con){
 	var newActivity = req.body.newActivity
 	var restaurantID = req.param('restaurantID');
 
-         con.query("UPDATE restaurant SET Activity = ? WHERE restaurantID = ?", [newActivity, restaurantID] ,function (err, result, fields) {
+         con.query("UPDATE restaurant SET Activity = (?) WHERE restaurantID = (?)", [newActivity, restaurantID] ,function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	 });
