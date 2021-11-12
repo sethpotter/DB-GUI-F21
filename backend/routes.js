@@ -18,7 +18,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the Product Id from the URL parameters
-        var productId = req.params('productId');
+        var productId = req.param('productId');
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
@@ -50,7 +50,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the Product Id from the URL parameters
-        var productId = req.params('productId');
+        var productId = req.param('productId');
         var name = req.body.name;
         var description = req.body.description;
         var image = req.body.image;
@@ -94,7 +94,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the Product Id from the URL parameters
-        var productId = req.params('productId');
+        var productId = req.param('productId');
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
@@ -126,7 +126,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the Order Id from the URL parameters
-        var orderId = req.params('orderId');
+        var orderId = req.param('orderId');
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
@@ -232,7 +232,7 @@ module.exports = function routes(app, logger) {
       } else {
         // Getting the Order Id from the URL parameters
         // And the remainder of variables from the body
-        var orderId = req.params('orderId');
+        var orderId = req.param('orderId');
         var orderDate = req.body.orderDate;
         var deliveryAddress = req.body.deliveryAddress;
         var carrier = req.body.carrier;
@@ -280,7 +280,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the Order Id from the URL parameters
-        var orderId = req.params('orderId');
+        var orderId = req.param('orderId');
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
@@ -302,16 +302,16 @@ module.exports = function routes(app, logger) {
   });
 
   // ---------------------------------------------- Users -----------------------------------
-  // /user
+// /user
   // GET
-  app.get('/user', (req, res) => {
+  app.get('/allusers', (req, res) => {
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection){
       if(err){
         // if there is an issue obtaining a connection, release the connection instance and log the error
         logger.error('Problem obtaining MySQL connection',err)
         res.status(400).send('Problem obtaining MySQL connection'); 
-      } else if(!req.params) {
+      } else {
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
         connection.query('SELECT * FROM UserTable', function (err, rows, fields) {
@@ -330,6 +330,7 @@ module.exports = function routes(app, logger) {
       }
     });
   });
+
 
   // /user
   // POST
@@ -381,7 +382,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the User Id from the URL parameters
-        var userId = req.params('userId');
+        var userId = req.param('userId');
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
@@ -413,7 +414,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the User Id from the URL parameters
-        var userId = req.params('userId');
+        var userId = req.param('userId');
         var username = req.body.username;
         var password = req.body.password;
         var userType = req.body.userType;
@@ -455,7 +456,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // Getting the User Id from the URL parameters
-        var userId = req.params('userId');
+        var userId = req.param('userId');
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
