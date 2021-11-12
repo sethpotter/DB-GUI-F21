@@ -395,8 +395,9 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-            res.status(200).json({
-              "data": JSON.stringify(rows)});
+	    res.end(JSON.stringify(rows));
+           // res.status(200).json({
+            //  "data": JSON.stringify(rows)});
           }
         });
       }
@@ -500,10 +501,12 @@ app.get('/inventoryTable/:productID', function(req, res){
     });
 });
 app.get('/orderDetails', function (req, res) {
-	con.query("SELECT * FROM orderDetails", function (err, result, fields) {
+    pool.getConnection(function (err, con){
+	con.query("SELECT * FROM OrderDetails", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
+    });
 });
 
 app.put('/inventoryTable', function(req, res){

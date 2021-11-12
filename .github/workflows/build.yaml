@@ -43,9 +43,11 @@ jobs:
             cd ~/DB-GUI-F21 &&
             cd backend &&
             npm install &&
+            yarn install &&
             cd .. &&
             cd frontend &&
             npm install &&
+            yarn install &&
             cd .. &&
             git checkout main &&
             git stash &&
