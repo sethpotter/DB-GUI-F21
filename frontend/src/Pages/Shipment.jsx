@@ -1,78 +1,89 @@
 import React from "react";
+import "./styles.css";
+
+export const NewData = (props) => {
+  let comeThru;
+  if (props.ok > 0) {
+    comeThru = (
+      <>
+        <h1>New Cart Item</h1>
+        <label htmlFor="item-select">Select Item to add. </label>
+        <br />
+        <select id="item-select" name="item-select"></select>
+        <br />
+        <label htmlFor="item-select">Select quantity. </label>
+        <br />
+        <input type="text" id="item-select" name="item-select" />
+        <br />
+      </>
+    );
+  } else {
+    comeThru = <></>;
+  }
+  return <>{comeThru}</>;
+};
+
+export class FormComponent extends React.Component {
+  state = {
+    result: []
+  };
+  render() {
+    for (let index in this.props.productName) {
+      if (index < this.state.result.length) {
+        continue;
+      } else {
+        this.state.result.push(
+          <tr>
+            <td>{this.props.productName[index]}</td>
+            <td>
+              <input type="text" value={this.props.quantity[index]} />
+            </td>
+          </tr>
+        );
+      }
+    }
+    return <>{this.state.result}</>;
+  }
+}
 
 export class Form extends React.Component {
   state = {
-    validOrders: [],
-    customerList: [],
-    shipment: "",
-    customer: "",
-    goodOrder: false,
-    goodCustomer: false
+    deliveryTo: "",
+    submitted: 0
   };
 
-  changeShipment = (event) => {
-    this.setState({ shipment: event.target.value });
+  newItem = () => {
+    this.setState({ submitted: 1 });
   };
-  changeCustomer = (event) => {
-    this.setState({ customer: event.target.value });
-  };
-
-  check = (event) => {
-    alert("Customer: " + this.state.customer);
-    for (let validOrder of this.state.validOrders) {
-      if (this.state.shipment == validOrder) {
-        this.state.goodOrder = true;
-      }
-    }
-    for (let validCustomer of this.state.customerList) {
-      if (this.state.customer == validOrder) {
-        this.state.goodCustomer = true;
-      }
-    }
-    if (this.state.goodCustomer == false) {
-      alert("No good customer!");
-    }
-    if (this.state.goodOrder == false) {
-      alert("No good order!");
-    }
-  };
-
   render() {
     return (
       <>
-        <h1>New Order</h1>
-        <form onSubmit={this.check}>
-          <label for="shipment">Shipment</label>
+        <h1>Shipment Details</h1>
+        <h2>Delivery To (Insert Javascript Here)</h2>
+
+        <form>
+          <button>Clear Form</button>
           <br />
-          <select
-            id="shipment"
-            name="shipment"
-            onChange={this.changeShipment}
-          />
-          <br />
-          <label for="quantity">Quantity</label>
-          <br />
-          <input type="text" id="shipment" name="shipment" />
-          <br />
-          <label for="customer">Customer</label>
-          <br />
-          <input
-            type="text"
-            id="customer"
-            name="customer"
-            onChange={this.changeCustomer}
-          />
-          <br />
-          <label for="carrier">Carrier:</label>
-          <select id="carrier" name="carrier">
-            <option value="usps">USPS</option>
-            <option value="ups">UPS</option>
-            <option value="fedex">FedEx</option>
-          </select>
-          <br />
-          <input type="submit" value="Submit" />
+          <table>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+            </tr>
+            <FormComponent productName={[]} quantity={[]} />
+          </table>
+          <button onClick={this.newItem}>Update Cart</button>
+          <input type="submit" value="Finalize Shipment" />
+          <NewData ok={this.state.submitted} />
         </form>
       </>
     );
   }
+}
+
+export default function App() {
+  return (
+    <div className="App">
+      <Form />
+    </div>
+  );
 }
