@@ -6,4 +6,6 @@ import App from './App';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import './Styles/Navbar.scss';
+
 ReactDOM.render(<App />, document.getElementById('root'));
