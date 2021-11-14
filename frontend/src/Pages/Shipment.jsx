@@ -79,11 +79,3 @@ export class Form extends React.Component {
     );
   }
 }
-
-export default function App() {
-  return (
-    <div className="App">
-      <Form />
-    </div>
-  );
-}
