@@ -1,26 +1,19 @@
 import React from "react";
-import "./styles.css";
 
 export const NewData = (props) => {
-  let comeThru;
-  if (props.ok > 0) {
-    comeThru = (
-      <>
-        <h1>New Cart Item</h1>
-        <label htmlFor="item-select">Select Item to add. </label>
-        <br />
-        <select id="item-select" name="item-select"></select>
-        <br />
-        <label htmlFor="item-select">Select quantity. </label>
-        <br />
-        <input type="text" id="item-select" name="item-select" />
-        <br />
-      </>
-    );
-  } else {
-    comeThru = <></>;
-  }
-  return <>{comeThru}</>;
+  return (
+    <>
+      <h1>New Cart Item</h1>
+      <label htmlFor="item-select">Select Item to add. </label>
+      <br />
+      <select id="item-select" name="item-select"></select>
+      <br />
+      <label htmlFor="item-select">Select quantity. </label>
+      <br />
+      <input type="text" id="item-select" name="item-select" />
+      <br />
+    </>
+  );
 };
 
 export class FormComponent extends React.Component {
@@ -49,13 +42,18 @@ export class FormComponent extends React.Component {
 export class Form extends React.Component {
   state = {
     deliveryTo: "",
-    submitted: 0
+    submitted: false
   };
 
   newItem = () => {
+    this.state.submitted = 1;
     this.setState({ submitted: 1 });
   };
   render() {
+    let tag = "";
+    if (this.state.submitted == true) {
+      tag = <NewData ok={this.state.submitted} />;
+    }
     return (
       <>
         <h1>Shipment Details</h1>
@@ -71,9 +69,14 @@ export class Form extends React.Component {
             </tr>
             <FormComponent productName={[]} quantity={[]} />
           </table>
-          <button onClick={this.newItem}>Update Cart</button>
+          <button
+            type="button"
+            onClick={() => this.setState({ submitted: !this.state.submitted })}
+          >
+            Update Cart
+          </button>
           <input type="submit" value="Finalize Shipment" />
-          <NewData ok={this.state.submitted} />
+          {tag}
         </form>
       </>
     );
