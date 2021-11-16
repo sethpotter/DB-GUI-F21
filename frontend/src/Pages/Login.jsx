@@ -24,12 +24,11 @@ const useStyles = makeStyles(theme => ({
 
 const LoginPage = ({ handleClose }) => {
     const classes = useStyles();
-    // create state variables for each input
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = e => {
-        e.preventDefault();
+    const handleSubmit = temp => {
+        temp.preventDefault();
         console.log(username, password);
         handleClose();
     };
@@ -41,7 +40,7 @@ const LoginPage = ({ handleClose }) => {
                 variant="filled"
                 required
                 value={username}
-                onChange={e => setUsername(e.target.value)}
+                onChange={temp => setUsername(temp.target.value)}
             />
             <TextField
                 label="Password"
@@ -49,7 +48,7 @@ const LoginPage = ({ handleClose }) => {
                 type="password"
                 required
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={temp => setPassword(temp.target.value)}
             />
             <div>
                 <Button type="submit" variant="contained" color="primary">
