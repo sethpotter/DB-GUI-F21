@@ -570,6 +570,30 @@ app.delete('/inventoryTable', function(req, res){
 
 
 //GET
+	
+// /Supplier
+app.get('/Supplier', function (req, res) {
+    pool.getConnection(function (err, con){
+	con.query("SELECT * FROM Supplier",function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+    });
+});
+	
+
+// /Supplier/{supplierID}
+app.get('/Supplier', function (req, res) {
+    pool.getConnection(function (err, con){
+        var supplierID = req.param('supplierID');
+       	con.query("SELECT * FROM Supplier WHERE supplierID = (?)", supplierID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+    });
+});
+
+		
 // /orderDetail/{orderId}
 app.get('/orderDetail', function (req, res) {
     pool.getConnection(function (err, con){
@@ -614,6 +638,21 @@ app.get('/allProductTable', function (req, res) {
 
 
 //PUT
+// /Supplier/{supplierID}
+app.put('/Supplier', async (req, res) => {
+    pool.getConnection(function (err, con){
+	var newName = req.body.newName
+	var supplierID = req.param('supplierID');
+
+	 con.query("UPDATE Supplier SET supplierName = (?) WHERE supplierID = (?)", [newName, supplierID] ,function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	 });
+     });
+});
+	
+	
+	
 // /orderDetail/{orderId}
 app.put('/orderDetail', async (req, res) => {
     pool.getConnection(function (err, con){
@@ -642,6 +681,22 @@ app.put('/restaurant', async (req, res) => {
 
 
 //POST 
+// /Supplier
+app.post('/Supplier', async (req, res) => {
+    pool.getConnection(function (err, con){
+        var supplierID = req.body.supplierID
+        var supplierName = req.body.supplierName
+    
+        con.query("INSERT INTO Supplier (supplierID, supplierName) VALUES (?, ?)", [supplierID, supplierName],function (err, result, fields) {
+            if (err) throw err;
+            res.end(JSON.stringify(result)); // Result in JSON format
+	});
+    });
+});	
+	
+	
+	
+	
 
 // /restaurant
 app.post('/restaurant', async (req, res) => {
@@ -677,6 +732,18 @@ app.post('/productTable', async (req, res) => {
 
 
 // DELETE
+	
+// /Supplier/{supplierID}
+app.delete('/Supplier/:supplierID', async (req, res) => {
+    pool.getConnection(function (err, con){
+	var supplierID = req.param('supplierID');
+	con.query("DELETE FROM Supplier WHERE supplierID = ? ", supplierID,function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+    });
+});
+	
 
 // /orderDetail/{orderId}
 app.delete('/orderDetail/:orderID', async (req, res) => {
