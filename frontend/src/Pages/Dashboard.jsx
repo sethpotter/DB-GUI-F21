@@ -20,7 +20,7 @@ export const DashboardPage = props => {
 
     const [ products = productList, setProducts ] = useState(undefined);
 
-    
+
 
     useEffect(() => {
         onSearch();
@@ -34,21 +34,23 @@ export const DashboardPage = props => {
 
         return productList.filter((productList) => {
             const productName = productList.name.toLowerCase();
-            return productName.includes(params.name);
+            return productName.includes(params.name.toLowerCase());
             });
     }
-    
+
     return <>
         <Navbar />
-        
+        <br />
         <div className="container margin-top">
             <h1 className="">Dashboard</h1>
+            <br />
             <ProductSearch onSearch={ params => setProducts(onSearch(params))}/>
+            <br />
         </div>
         <ProductList products={products}/>
-        
+
     </>
-    
+
 }
 
 export default DashboardPage;
