@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -67,13 +68,17 @@ const SignUpPage = ({ handleClose }) => {
                 value={conPassword}
                 onChange={temp => setConPassword(temp.target.value)}
             />
-            <div>
-                <Button variant="contained" onClick={handleClose}>
+        
+            <div className="">
+                <Link type="button" className="btn landing-button" to="/Dashboard">Signup</Link>
+                <Link type="button button-secondary" className="btn landing-button" to="/Login">Cancel</Link>
+                <button type="button" className="btn"></button>
+                {/*<Button variant="contained" onClick={handleClose}>
                     Cancel
                 </Button>
                 <Button type="submit" variant="contained" color="primary">
                     Signup
-                </Button>
+    </Button>*/}
             </div>
         </form>
     );
