@@ -1,0 +1,86 @@
+@import 'https://fonts.googleapis.com/css?family=Inter:300,400,600,700';
+
+$primaryColor: #0AAD5C;
+$borderColor: #D4D4D4;
+
+#logo {
+    width: 175px;
+}
+
+#notifications {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px #a2a2a2;
+    //border: 2px $borderColor solid;
+    border: 0 #fff solid;
+    padding: 0;
+}
+
+#notifications > img {
+    width: 20px;
+    padding-bottom: 2px;
+}
+
+#notifications:hover, #notifications:focus {
+    border: 2px $borderColor solid;
+}
+
+#account {
+    width: 125px;
+    height: 65px;
+    border: 0 #fff solid;
+    padding: 0;
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+#account:hover, #account:focus {
+    border: 2px darken($borderColor, 20%) solid;
+}
+
+#dropdown {
+    width: 10px;
+    height: 10px;
+}
+
+#dropdown:hover, #dropdown:focus {
+    opacity: 0.4;
+}
+
+.nav-border {
+    //border-bottom: 4px $borderColor solid;
+    box-shadow: 0 2px 3px #a2a2a2;
+}
+
+.nav-btn {
+    color: #000;
+    background-color: #fff;
+    border-color: #fff;
+    border-radius: 20px;
+    height: 40px;
+    font-size: 20px;
+    padding: 3px 0;
+    font-family: Inter, var(--bs-body-font-family);
+}
+
+.nav-btn:hover {
+    box-shadow: 0 2px 3px #a2a2a2;
+}
+
+.nav-btn.active {
+    color: #fff;
+    background-color: $primaryColor;
+    border-color: $primaryColor;
+}
+
+.circle-btn {
+    color: #fff;
+    background-color: $primaryColor;
+    border-color: $primaryColor;
+    border-radius: 50%;
+}
+
+.nav-text-primary {
+    color: $primaryColor;
+}
