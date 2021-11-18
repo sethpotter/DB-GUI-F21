@@ -605,8 +605,9 @@ app.get('/orderDetail', function (req, res) {
     });
 });
 
-// /restaurant
-app.get('/Restaurant', function (req, res) {
+
+// /allrestaurant
+app.get('/allrestaurant', function (req, res) {
     pool.getConnection(function (err, con){
 	con.query("SELECT * FROM Restaurant",function (err, result, fields) {
 		if (err) throw err;
@@ -712,6 +713,7 @@ app.post('/Restaurant', async (req, res) => {
 	});
     });
 });
+
 
 
 // /productTable
