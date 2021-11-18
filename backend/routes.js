@@ -504,7 +504,7 @@ app.get('/allInventory', function (req, res) {
 app.get('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
         var restaurantID = req.param("restaurantID");
-        con.query("SELECT * FROM InventoryTable WHERE restaurantID = (?)", restaurantID, function(err, result, fields){
+        con.query("SELECT * FROM InventoryTable WHERE RestaurantID = (?)", restaurantID, function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
         });
