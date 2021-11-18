@@ -571,8 +571,8 @@ app.delete('/inventoryTable', function(req, res){
 
 //GET
 	
-// /allSupplier
-app.get('/allSupplier', function (req, res) {
+// /Supplier
+app.get('/Supplier', function (req, res) {
     pool.getConnection(function (err, con){
 	con.query("SELECT * FROM Supplier",function (err, result, fields) {
 		if (err) throw err;
