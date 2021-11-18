@@ -571,8 +571,8 @@ app.delete('/inventoryTable', function(req, res){
 
 //GET
 	
-// /Supplier
-app.get('/Supplier', function (req, res) {
+// /allSupplier
+app.get('/allSupplier', function (req, res) {
     pool.getConnection(function (err, con){
 	con.query("SELECT * FROM Supplier",function (err, result, fields) {
 		if (err) throw err;
@@ -605,8 +605,8 @@ app.get('/orderDetail', function (req, res) {
     });
 });
 
-// /restaurant
-app.get('/restaurant', function (req, res) {
+// /allrestaurant
+app.get('/allrestaurant', function (req, res) {
     pool.getConnection(function (err, con){
 	con.query("SELECT * FROM restaurant",function (err, result, fields) {
 		if (err) throw err;
@@ -714,7 +714,7 @@ app.post('/restaurant', async (req, res) => {
 });
 
 
-// /productTable
+// /allproductTable
 app.post('/productTable', async (req, res) => {
     pool.getConnection(function (err, con){
         var productID = req.body.restaurantID
