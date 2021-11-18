@@ -52,14 +52,9 @@ const LoginPage = ({ handleClose }) => {
             />
             <div className="d-flex flex-row justify-content-between mx-5">
                 <Link type="button button-secondary" className="btn btn-primary" to="/">Login</Link>
-                {/*<Button type="submit" variant="contained" color="primary">
-                    Login
-                </Button>
-                <Button variant="contained" onClick={} color="primary">
-                    Signup
-    </Button>*/}
             </div>
-            <div className="d-flex flex-row justify-content-between mx-5"><Link type="button button-secondary" className="button landing-button" to="/Signup">Signup</Link></div>
+            <div className="d-flex flex-row justify-content-between mx-5">
+                <Link type="button button-secondary" className="button landing-button" to="/Signup">Signup</Link></div>
         </form>
     );
 };

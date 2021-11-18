@@ -70,14 +70,7 @@ const SignUpPage = ({ handleClose }) => {
             />
         
             <div className="d-flex flex-row justify-content-between mx-5">
-                <Link type="button" className="btn btn-primary" to="/Dashboard">Signup</Link>
-                
-                {/*<Button variant="contained" onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button type="submit" variant="contained" color="primary">
-                    Signup
-    </Button>*/}
+                <Link type="button" className="btn btn-primary" to="/">Signup</Link>
             </div>
         </form>
     );
