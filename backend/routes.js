@@ -31,7 +31,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 		  // res.status(200).json({
              // "data": JSON.stringify(rows)});
           }
@@ -76,7 +76,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -109,7 +109,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -142,7 +142,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -174,7 +174,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
             }
@@ -216,7 +216,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -267,7 +267,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
@@ -300,7 +300,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(result)); // Result in JSON format
+		res.end(JSON.stringify(rows)); // Result in JSON format
 //            res.status(200).json({
 //              "data": JSON.stringify(rows)});
           }
