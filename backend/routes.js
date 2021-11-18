@@ -605,10 +605,11 @@ app.get('/orderDetail', function (req, res) {
     });
 });
 
+
 // /allrestaurant
 app.get('/allrestaurant', function (req, res) {
     pool.getConnection(function (err, con){
-	con.query("SELECT * FROM restaurant",function (err, result, fields) {
+	con.query("SELECT * FROM Restaurant",function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -616,10 +617,10 @@ app.get('/allrestaurant', function (req, res) {
 });
 
 // /restaurant/{restaurantID}
-app.get('/restaurant', function (req, res) {
+app.get('/Restaurant', function (req, res) {
     pool.getConnection(function (err, con){
         var restaurantID = req.param('restaurantID');
-	con.query("SELECT * FROM restaurant WHERE restaurantID = (?)", restaurantID, function (err, result, fields) {
+	con.query("SELECT * FROM Restaurant WHERE restaurantID = (?)", restaurantID, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -654,12 +655,12 @@ app.put('/Supplier', async (req, res) => {
 	
 	
 // /orderDetail/{orderId}
-app.put('/orderDetail', async (req, res) => {
+app.put('/OrderDetail', async (req, res) => {
     pool.getConnection(function (err, con){
 	var newQuantity = req.body.newQuantity
 	var orderID = req.param('orderID');
 
-	 con.query("UPDATE orderDetail SET Quantity = (?) WHERE orderID = (?)", [newQuantity, orderId] ,function (err, result, fields) {
+	 con.query("UPDATE OrderDetails SET Quantity = (?) WHERE orderID = (?)", [newQuantity, orderId] ,function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	 });
@@ -667,12 +668,12 @@ app.put('/orderDetail', async (req, res) => {
 });
 
 ///restaurant/{restaurantID}
-app.put('/restaurant', async (req, res) => {
+app.put('/Restaurant', async (req, res) => {
     pool.getConnection(function (err, con){
 	var newActivity = req.body.newActivity
 	var restaurantID = req.param('restaurantID');
 
-         con.query("UPDATE restaurant SET Activity = (?) WHERE restaurantID = (?)", [newActivity, restaurantID] ,function (err, result, fields) {
+         con.query("UPDATE Restaurant SET Activity = (?) WHERE restaurantID = (?)", [newActivity, restaurantID] ,function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	 });
@@ -699,14 +700,14 @@ app.post('/Supplier', async (req, res) => {
 	
 
 // /restaurant
-app.post('/restaurant', async (req, res) => {
+app.post('/Restaurant', async (req, res) => {
     pool.getConnection(function (err, con){
         var restaurantID = req.body.restaurantID
         var name = req.body.name
         var dateJoined = req.body.dateJoined 
         var active = req.body.active
     
-        con.query("INSERT INTO restaurant (restaurantID, name, dateJoined, active) VALUES (?, ?, ?, ?)", [restaurantID, name, dateJoined, active],function (err, result, fields) {
+        con.query("INSERT INTO Restaurant (restaurantID, name, dateJoined, active) VALUES (?, ?, ?, ?)", [restaurantID, name, dateJoined, active],function (err, result, fields) {
             if (err) throw err;
             res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -714,16 +715,16 @@ app.post('/restaurant', async (req, res) => {
 });
 
 
-// /allproductTable
-app.post('/productTable', async (req, res) => {
+
+// /productTable
+app.post('/ProductTable', async (req, res) => {
     pool.getConnection(function (err, con){
         var productID = req.body.restaurantID
         var name = req.body.name
         var description = req.body.dateJoined 
         var image = req.body.active
-        var minVal = req.body.minVal
     
-        con.query("INSERT INTO productTable (productID, name, description, image, minVal) VALUES (?, ?, ?, ?, ?)", [productID, name, description, image, minVal ],function (err, result, fields) {
+        con.query("INSERT INTO ProductTable (productID, name, description, image) VALUES (?, ?, ?, ?)", [productID, name, description, image, minVal ],function (err, result, fields) {
             if (err) throw err;
             res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -745,11 +746,11 @@ app.delete('/Supplier/:supplierID', async (req, res) => {
 });
 	
 
-// /orderDetail/{orderId}
-app.delete('/orderDetail/:orderID', async (req, res) => {
+// /orderDetails/{orderId}
+app.delete('/OrderDetails/:orderID', async (req, res) => {
     pool.getConnection(function (err, con){
 	var orderID = req.param('orderID');
-	con.query("DELETE FROM orderDetails WHERE orderID = ? ", orderID,function (err, result, fields) {
+	con.query("DELETE FROM OrderDetails WHERE orderID = ? ", orderID,function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
 	});
@@ -759,10 +760,10 @@ app.delete('/orderDetail/:orderID', async (req, res) => {
 
 
 // /restaurant/{restaurantID}
-app.delete('/restaurant/:restaurantID', async (req, res) => {
+app.delete('/Restaurant/:restaurantID', async (req, res) => {
     pool.getConnection(function (err, con){
 	var restaurantID = req.param('restaurantID');
-	con.query("DELETE FROM restaurant WHERE restaurantID = ? ", restaurantID,function (err, result, fields) {
+	con.query("DELETE FROM Restaurant WHERE restaurantID = ? ", restaurantID,function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
 	});
