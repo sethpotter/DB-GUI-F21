@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -50,9 +50,8 @@ const LoginPage = ({ handleClose }) => {
                 value={password}
                 onChange={temp => setPassword(temp.target.value)}
             />
-            <div>
-                <Link type="button button-secondary" className="button landing-button" to="/Signup">Signup</Link>
-                <Link type="button button-secondary" className="button landing-button" to="/Dashboard">Login</Link>
+            <div className="d-flex flex-row justify-content-between mx-5">
+                <Link type="button button-secondary" className="btn btn-primary" to="/">Login</Link>
                 {/*<Button type="submit" variant="contained" color="primary">
                     Login
                 </Button>
@@ -60,6 +59,7 @@ const LoginPage = ({ handleClose }) => {
                     Signup
     </Button>*/}
             </div>
+            <div className="d-flex flex-row justify-content-between mx-5"><Link type="button button-secondary" className="button landing-button" to="/Signup">Signup</Link></div>
         </form>
     );
 };

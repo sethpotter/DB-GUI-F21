@@ -69,10 +69,9 @@ const SignUpPage = ({ handleClose }) => {
                 onChange={temp => setConPassword(temp.target.value)}
             />
         
-            <div className="">
-                <Link type="button" className="btn landing-button" to="/Dashboard">Signup</Link>
-                <Link type="button button-secondary" className="btn landing-button" to="/Login">Cancel</Link>
-                <button type="button" className="btn"></button>
+            <div className="d-flex flex-row justify-content-between mx-5">
+                <Link type="button" className="btn btn-primary" to="/Dashboard">Signup</Link>
+                
                 {/*<Button variant="contained" onClick={handleClose}>
                     Cancel
                 </Button>
