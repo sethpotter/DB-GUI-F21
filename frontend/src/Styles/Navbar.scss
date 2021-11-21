@@ -39,12 +39,12 @@ $borderColor: #D4D4D4;
     border: 2px darken($borderColor, 20%) solid;
 }
 
-#dropdown {
+#dropdownImg {
     width: 10px;
     height: 10px;
 }
 
-#dropdown:hover, #dropdown:focus {
+#dropdownImg:hover, #dropdownImg:focus {
     opacity: 0.4;
 }
 
