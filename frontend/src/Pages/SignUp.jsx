@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
+import {UserTypes} from '../Models/User';
+import { url } from '../Util/url';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,6 +37,23 @@ const SignUpPage = ({ handleClose }) => {
         console.log(username, email, password, conPassword);
         handleClose();
     };
+
+    const handleSignup = (event) => {
+        if(password === conPassword) {
+
+            let userType = UserTypes.EMPLOYEE; // TODO Need a box for this
+
+            // TODO No email usage?
+            // TODO No database-side duplicate checking?
+
+            // TODO Database has POST user, but it doesn't return a userId?...
+
+            axios.post(`http://${url}:8000/register?userName=${username}&password=${password}&userType=${userType}`).then(res => {
+
+            });
+
+        }
+    }
 
     return (
         <form className={classes.root} onSubmit={handleSubmit}>
