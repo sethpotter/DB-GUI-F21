@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Product } from '../Models/Product';
-import Navbar from '../Components/Navbar';
+import { Navbar } from '../Components/Navbar';
 import { ProductList } from '../Components/ProductList';
 import { ProductSearch } from '../Components/ProductSearch';
 
