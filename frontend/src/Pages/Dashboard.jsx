@@ -9,18 +9,16 @@ let str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm
 export const DashboardPage = props => {
     const productList = [
         new Product(1, "Beer", str, "https://via.placeholder.com/350", 1, 5),
-        new Product(2, "Wine", str, "https://via.placeholder.com/350", 0, 5),
-        new Product(3, "Salt", str, "https://via.placeholder.com/350", 0.3, 6),
-        new Product(4, "Chips", str, "https://via.placeholder.com/350", 1.5, 8),
-        new Product(5, "Salmon", str, "https://via.placeholder.com/350", 4.5, 10),
+        new Product(2, "Wine", str, "https://via.placeholder.com/350", 8, 5),
+        new Product(3, "Salt", str, "https://via.placeholder.com/350", 0.3, 2),
+        new Product(4, "Chips", str, "https://via.placeholder.com/350", 1.7, 8),
+        new Product(5, "Salmon", str, "https://via.placeholder.com/350", 4.5, 1),
         new Product(6, "Sugar", str, "https://via.placeholder.com/350", 0.3, 6),
-        new Product(7, "Vinegar", str, "https://via.placeholder.com/350", 0, 8),
+        new Product(7, "Vinegar", str, "https://via.placeholder.com/350", 23, 2),
         new Product(8, "Tilapia", str, "https://via.placeholder.com/350", 4.5, 10)
     ]
 
     const [ products = productList, setProducts ] = useState(undefined);
-
-
 
     useEffect(() => {
         onSearch();
