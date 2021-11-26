@@ -12,13 +12,13 @@ import {User, UserTypes} from "../Models/User";
  * @returns {Promise<AxiosResponse<any> | T>}
  */
 const register = (username, password, usertype) => {
-    const query = {
+    const request = {
         username: username,
         password: password,
         usertype: usertype
     };
 
-    return axios.post(`http://${url}:8000/register?` + toQuery(query)).then(res => {
+    return axios.post(`http://${url}:8000/register?` + toQuery(request)).then(res => {
         return res.data;
     }).catch(err => {
         console.log(err.response);
@@ -34,12 +34,12 @@ const register = (username, password, usertype) => {
  * @returns {Promise<AxiosResponse<any> | T>}
  */
 const login = (username, password) => {
-    const query = {
+    const request = {
         username: username,
         password: password
     };
 
-    return axios.get(`http://${url}:8000/login?` + toQuery(query)).then(res => {
+    return axios.get(`http://${url}:8000/login?` + toQuery(request)).then(res => {
         let userData = res.data;
         let user = new User(userData.userID, username, null, password, userData.userType, null);
         if(userData.userType !== UserTypes.SUPPLIER) {
@@ -62,11 +62,11 @@ const login = (username, password) => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 const getUserRestaurantIds = (user) => {
-    const query = {
+    const request = {
         userID: user.id
     };
 
-    return axios.get(`http://${url}:8000/getRestaurantId?` + toQuery(query)).then(res => {
+    return axios.get(`http://${url}:8000/getRestaurantId?` + toQuery(request)).then(res => {
         let restaurants = [];
         for(let wrap of res.data) {
             restaurants.push(wrap.restaurantID);
