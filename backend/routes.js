@@ -351,7 +351,7 @@ module.exports = function routes(app, logger) {
       } else {
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
-        var userID = req.body.userID;
+        var userID = req.query.userID;
 
         connection.query('SELECT * FROM restaurantEmployee where userID = ?', userID, function (err, rows, fields) {
           connection.release();
@@ -373,14 +373,14 @@ module.exports = function routes(app, logger) {
   app.get('/userid', (req, res) => {
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection){
-      if(err){
+      if (err) {
         // if there is an issue obtaining a connection, release the connection instance and log the error
         logger.error('Problem obtaining MySQL connection',err)
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
-        var username = req.body.username;
+        var username = req.query.username;
 
         connection.query('SELECT * FROM UserTable where username = ?', username, function (err, rows, fields) {
           connection.release();
@@ -391,16 +391,16 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		         res.end(JSON.stringify(rows)); // Result in JSON format
+            res.end(JSON.stringify(rows)); // Result in JSON format
           }
         });
       }
     });
   });
 
-  // /user
+  // /register
   // POST
-  app.post('/user', (req, res) => {
+  app.post('/register', (req, res) => {
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection){
       if(err){
@@ -410,26 +410,59 @@ module.exports = function routes(app, logger) {
       } else {
 
         // Getting the variables from the body of the request
-        var username = req.body.username;
-        var password = req.body.password;
-        var usertype = req.body.usertype;
+        var username = req.query.username;
+        var password = req.query.password;
+        var usertype = req.query.usertype;
 
+        connection.query('SELECT * FROM UserTable where username = ?', username, function (err, rows, fields) {
+          if(err) {
+            connection.release();
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).send('Problem creating account');
+          } else {
+            if(rows.length === 0) {
+              connection.query('INSERT INTO UserTable(username, password, userType) VALUES (?,?,?)', [username, password, usertype], function (err, rows, fields) {
+                connection.release();
+                if (err) {
+                  logger.error("Error while registering: \n", err);
+                  res.status(400).send('Problem creating account');
+                } else {
+                  res.status(200).send('Registered account successfully');
+                }
+              });
+            } else {
+              res.status(400).send('Username already exists');
+            }
+          }
+        });
+      }
+    });
+  });
 
-        var query = 'INSERT INTO UserTable(username, password, userType)' +
-                    'VALUES (?,?,?)';
+  // /login
+  // GET
+  app.get('/login', (req, res) => {
+    pool.getConnection(function (err, connection) {
+      if(err) {
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        var username = req.query.username;
+        var password = req.query.password;
 
-        // if there is no issue obtaining a connection, execute query and release connection
-        // Will need to change the query to the appropriately named table
-        connection.query(query, [username, password, usertype], function (err, rows, fields) {
+        connection.query('SELECT * FROM UserTable where username = ?', username, function (err, rows, fields) {
           connection.release();
           if (err) {
             logger.error("Error while fetching values: \n", err);
-            res.status(400).json({
-              "data": [],
-              "error": "Error obtaining values"
-            })
+            res.status(400).send('Username does not exist');
           } else {
-          		res.end(JSON.stringify(rows)); // Result in JSON format
+            if(rows.length === 0)
+              res.status(400).send('Username does not exist');
+            if(password === rows[0].password) {
+              res.status(200).send(rows[0]);
+            } else {
+              res.status(400).send('Incorrect password');
+            }
           }
         });
       }
@@ -438,7 +471,7 @@ module.exports = function routes(app, logger) {
 
   // /user/{userId}
   // GET
-  app.get('/user', (req, res) => {
+  app.get('/user/:userId', (req, res) => {
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection){
       if(err){
@@ -619,11 +652,6 @@ app.delete('/inventoryTable', function(req, res){
     });
 });
 
-
-
-
-
-
 //GET
 	
 // /Supplier
@@ -683,7 +711,7 @@ app.get('/allrestaurant', function (req, res) {
 });
 
 // /restaurant/{restaurantID}
-app.get('/Restaurant', function (req, res) {
+app.get('/Restaurant/:restaurantID', function (req, res) {
     pool.getConnection(function (err, con){
         var restaurantID = req.param('restaurantID');
 	con.query("SELECT * FROM Restaurant WHERE restaurantID = (?)", restaurantID, function (err, result, fields) {
@@ -696,7 +724,7 @@ app.get('/Restaurant', function (req, res) {
 // /productTable
 app.get('/allProductTable', function (req, res) {
     pool.getConnection(function (err, con){
-	con.query("SELECT * FROM productTable",function (err, result, fields) {
+	con.query("SELECT * FROM ProductTable",function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
