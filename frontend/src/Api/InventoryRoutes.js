@@ -1,6 +1,7 @@
 import axios from "axios";
 import {url} from "../Util/url";
 import {Product} from "../Models/Product";
+import {toQuery} from "../Util/utils";
 
 /**
  * Gets ALL available products.
@@ -19,6 +20,29 @@ const getProducts = () => {
     });
 }
 
+/**
+ * Updates a product's information globally.
+ * @param product
+ * @returns {Promise<*[]>}
+ */
+const updateProduct = (product) => {
+    let request = {
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        image: product.image
+    };
+
+    return axios.put(`http://${url}:8000/productTable/` + product.id + "?" + toQuery(request)).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
 export {
-    getProducts
+    getProducts,
+    updateProduct
 }

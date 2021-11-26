@@ -14,7 +14,7 @@ const getRestaurantById = (id) => {
         return new Restaurant(id, resData.name, resData.dateJoined, resData.active);
     }).catch(err => {
         console.log(err.response);
-        return err.response.data;
+        return null;
     });
 }
 
