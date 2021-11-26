@@ -27,6 +27,42 @@ const addOrder = (order) => {
     });
 }
 
+/**
+ * Update an order on the order table.
+ * @param order
+ * @returns {Promise<boolean>}
+ */
+const updateOrder = (order) => {
+    let request = {
+        orderDate: order.orderDate,
+        shippedDate: order.shippedDate,
+        arrivalDate: order.arrivalDate,
+        address: order.address,
+        carrier: order.carrier,
+        delivered: order.delivered
+    };
+
+    return axios.put(`http://${url}:8000/order/${order.id}?` + toQuery(request)).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
+const deleteOrder = (orderId) => {
+    return axios.delete(`http://${url}:8000/order/` + orderId).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
 export {
-    addOrder
+    addOrder,
+    updateOrder,
+    deleteOrder
 }
