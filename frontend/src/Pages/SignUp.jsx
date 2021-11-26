@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: theme.spacing(2),
+        padding: theme.spacing(20),
 
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -92,6 +92,8 @@ const SignUpPage = ({ handleClose }) => {
             <div className="d-flex flex-row justify-content-between mx-5">
                 <Link type="button" className="btn btn-primary" to="/">Signup</Link>
             </div>
+            <div className="d-flex flex-row justify-content-between mx-5">
+                <Link type="button button-secondary" className="button landing-button" to="/Login">Cancel</Link></div>
         </form>
     );
 };

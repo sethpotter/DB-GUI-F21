@@ -340,6 +340,63 @@ module.exports = function routes(app, logger) {
     });
   });
 
+  // given a user ID return the user's restaurant ID
+  app.get('/getRestaurantId', (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        // Will need to change the query to the appropriately named table
+        var userID = req.body.userID;
+
+        connection.query('SELECT * FROM restaurantEmployee where userID = ?', userID, function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+		         res.end(JSON.stringify(rows)); // Result in JSON format
+          }
+        });
+      }
+    });
+  });
+
+  // given a username return the user's userId
+  app.get('/userid', (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        // Will need to change the query to the appropriately named table
+        var username = req.body.username;
+
+        connection.query('SELECT * FROM UserTable where username = ?', username, function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+		         res.end(JSON.stringify(rows)); // Result in JSON format
+          }
+        });
+      }
+    });
+  });
 
   // /user
   // POST
@@ -359,11 +416,11 @@ module.exports = function routes(app, logger) {
 
 
         var query = 'INSERT INTO UserTable(username, password, userType)' +
-                    'VALUES ((?)(?)(?))';
+                    'VALUES (?,?,?)';
 
         // if there is no issue obtaining a connection, execute query and release connection
         // Will need to change the query to the appropriately named table
-        connection.query('query', [username, password, usertype], function (err, rows, fields) {
+        connection.query(query, [username, password, usertype], function (err, rows, fields) {
           connection.release();
           if (err) {
             logger.error("Error while fetching values: \n", err);
@@ -372,9 +429,7 @@ module.exports = function routes(app, logger) {
               "error": "Error obtaining values"
             })
           } else {
-		res.end(JSON.stringify(rows)); // Result in JSON format
-//            res.status(200).json({
-//              "data": JSON.stringify(rows)});
+          		res.end(JSON.stringify(rows)); // Result in JSON format
           }
         });
       }
@@ -594,6 +649,17 @@ app.get('/Supplier', function (req, res) {
 });
 
 		
+app.get('/orderRestaurantID', function (req, res) {
+    pool.getConnection(function (err, con){
+        var orderID = req.param('orderID');
+       	con.query("select orderID, restaurantID from `Order` where supplierID = ?", orderID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+    });
+});
+
+
 // /orderDetail/{orderId}
 app.get('/orderDetail', function (req, res) {
     pool.getConnection(function (err, con){
@@ -672,7 +738,6 @@ app.put('/Restaurant', async (req, res) => {
     pool.getConnection(function (err, con){
 	var newActivity = req.body.newActivity
 	var restaurantID = req.param('restaurantID');
-
          con.query("UPDATE Restaurant SET Activity = (?) WHERE restaurantID = (?)", [newActivity, restaurantID] ,function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -696,9 +761,6 @@ app.post('/Supplier', async (req, res) => {
 });	
 	
 	
-	
-	
-
 // /restaurant
 app.post('/Restaurant', async (req, res) => {
     pool.getConnection(function (err, con){
