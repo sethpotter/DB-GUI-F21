@@ -8,7 +8,7 @@ import {toQuery} from "../Util/utils";
  * @returns {Promise<*[]>}
  */
 const getProducts = () => {
-    return axios.get(`http://${url}:8000/allProductTable`).then(res => {
+    return axios.get(`http://${url}:8000/product`).then(res => {
         let products = [];
         for(let p of res.data) {
             products.push(new Product(p.productID, p.name, p.description, p.priceperunit, p.image, null, null));
@@ -25,6 +25,29 @@ const getProducts = () => {
  * @param product
  * @returns {Promise<*[]>}
  */
+const addProduct = (product) => {
+    let request = {
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        image: product.image
+    };
+
+    return axios.post(`http://${url}:8000/product` + "?" + toQuery(request)).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
+
+/**
+ * Updates a product's information globally.
+ * @param product
+ * @returns {Promise<*[]>}
+ */
 const updateProduct = (product) => {
     let request = {
         name: product.name,
@@ -33,7 +56,17 @@ const updateProduct = (product) => {
         image: product.image
     };
 
-    return axios.put(`http://${url}:8000/productTable/` + product.id + "?" + toQuery(request)).then(res => {
+    return axios.put(`http://${url}:8000/product/` + product.id + "?" + toQuery(request)).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
+const deleteProduct = (productId) => {
+    return axios.delete(`http://${url}:8000/product/` + productId).then(res => {
         console.log(res);
         return true;
     }).catch(err => {
@@ -44,5 +77,7 @@ const updateProduct = (product) => {
 
 export {
     getProducts,
-    updateProduct
+    addProduct,
+    updateProduct,
+    deleteProduct
 }
