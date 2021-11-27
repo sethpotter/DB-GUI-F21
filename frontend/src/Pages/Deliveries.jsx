@@ -1,5 +1,5 @@
 import React from "react";
-import '../Styles/ShipmentsDeliveries.css'
+import '../Styles/ShipmentsDeliveries.css';
 
 export const ChangeStatus = (props) => { // Select from 3 statuses with select menu
     return (
