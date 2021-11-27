@@ -1,31 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom'
 import { login } from "../Api/UserRoutes";
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: theme.spacing(32),
-
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '300px',
-        },
-        '& .MuiButtonBase-root': {
-            margin: theme.spacing(2),
-        },
-    },
-}));
+import "../Styles/Login.scss";
+import logo from "../Resources/logo.svg";
 
 export const LoginPage = ({ handleClose }) => {
-    const classes = useStyles();
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -48,28 +29,30 @@ export const LoginPage = ({ handleClose }) => {
     };
 
     return (
-        <form className={classes.root}>
-            <TextField
-                label="Username"
-                variant="filled"
-                required
-                value={username}
-                onChange={temp => setUsername(temp.target.value)}
-            />
-            <TextField
-                label="Password"
-                variant="filled"
-                type="password"
-                required
-                value={password}
-                onChange={temp => setPassword(temp.target.value)}
-            />
-            {(errorMsg.length > 0) ? <p className="text-danger">* {errorMsg}</p> : null}
-            <div className="d-flex flex-row justify-content-between mx-5">
-                <button type="button button-secondary" className="btn btn-primary" onClick={(event) => handleSubmit(event)}>Login</button>
-            </div>
-            <div className="d-flex flex-row justify-content-between mx-5">
-                <Link type="button button-secondary" className="button landing-button" to="/Signup">Signup</Link></div>
-        </form>
+        <div className="login-root">
+            <form>
+                <img src={logo} alt="Logo"/>
+                <TextField
+                    label="Username"
+                    variant="filled"
+                    required
+                    value={username}
+                    onChange={temp => setUsername(temp.target.value)}
+                />
+                <TextField
+                    label="Password"
+                    variant="filled"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={temp => setPassword(temp.target.value)}
+                />
+                {(errorMsg.length > 0) ? <p className="text-danger">* {errorMsg}</p> : null}
+                <div className="d-flex flex-row justify-content-center gap-5">
+                    <button type="button" className="btn btn-primary w-50" onClick={(event) => handleSubmit(event)}>Login</button>
+                    <button type="button" className="btn btn-outline-primary w-50" onClick={() => navigate("/signup")}>Register</button>
+                </div>
+            </form>
+        </div>
     );
 };

@@ -8,27 +8,9 @@ import { Link } from 'react-router-dom'
 import {UserTypes} from '../Models/User';
 import { url } from '../Util/url';
 import { register } from "../Api/UserRoutes";
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: theme.spacing(20),
-
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '300px',
-        },
-        '& .MuiButtonBase-root': {
-            margin: theme.spacing(2),
-        },
-    },
-}));
+import "../Styles/Signup.scss"
 
 export const SignUpPage = ({ handleClose }) => {
-    const classes = useStyles();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -54,45 +36,46 @@ export const SignUpPage = ({ handleClose }) => {
     };
 
     return (
-        <form className={classes.root}>
-            <TextField
-                label="Username"
-                variant="filled"
-                required
-                value={username}
-                onChange={temp => setUsername(temp.target.value)}
-            />
-            <TextField
-                label="Email"
-                variant="filled"
-                type="email"
-                required
-                value={email}
-                onChange={temp => setEmail(temp.target.value)}
-            />
-            <TextField
-                label="Password"
-                variant="filled"
-                type="password"
-                required
-                value={password}
-                onChange={temp => setPassword(temp.target.value)}
-            />
-            <TextField
-                label="Confirm Password"
-                variant="filled"
-                type="conPassword"
-                required
-                value={conPassword}
-                onChange={temp => setConPassword(temp.target.value)}
-            />
-            {(errorMsg.length > 0) ? <p className="text-danger">* {errorMsg}</p> : null}
-            {(successMsg.length > 0) ? <p className="text-success">{successMsg}</p> : null}
-            <div className="d-flex flex-row justify-content-between mx-5">
-                <button type="button" className="btn btn-primary" onClick={(event) => handleSubmit(event)}>Signup</button>
-            </div>
-            <div className="d-flex flex-row justify-content-between mx-5">
-                <Link type="button button-secondary" className="button landing-button" to="/Login">Cancel</Link></div>
-        </form>
+        <div className="signup-root">
+            <form>
+                <TextField
+                    label="Username"
+                    variant="filled"
+                    required
+                    value={username}
+                    onChange={temp => setUsername(temp.target.value)}
+                />
+                <TextField
+                    label="Email"
+                    variant="filled"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={temp => setEmail(temp.target.value)}
+                />
+                <TextField
+                    label="Password"
+                    variant="filled"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={temp => setPassword(temp.target.value)}
+                />
+                <TextField
+                    label="Confirm Password"
+                    variant="filled"
+                    type="conPassword"
+                    required
+                    value={conPassword}
+                    onChange={temp => setConPassword(temp.target.value)}
+                />
+                {(errorMsg.length > 0) ? <p className="text-danger">* {errorMsg}</p> : null}
+                {(successMsg.length > 0) ? <p className="text-success">{successMsg}</p> : null}
+                <div className="d-flex flex-row justify-content-center gap-5">
+                    <button type="button" className="btn btn-primary w-50" onClick={(event) => handleSubmit(event)}>Register</button>
+                    <Link type="button" className="btn btn-outline-primary w-50" to="/Login">Cancel</Link>
+                </div>
+            </form>
+        </div>
     );
 };
