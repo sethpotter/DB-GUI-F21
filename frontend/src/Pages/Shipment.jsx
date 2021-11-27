@@ -1,5 +1,5 @@
 import React from "react";
-
+import '../Styles/ShipmentsDeliveries.css';
 
 
 export class NewData extends React.Component {
