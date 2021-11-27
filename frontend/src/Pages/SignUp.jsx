@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,14 +24,13 @@ const useStyles = makeStyles(theme => ({
 
 const SignUpPage = ({ handleClose }) => {
     const classes = useStyles();
-    // create state variables for each input
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('');
 
-    const handleSubmit = e => {
-        e.preventDefault();
+    const handleSubmit = temp => {
+        temp.preventDefault();
         console.log(username, email, password, conPassword);
         handleClose();
     };
@@ -42,7 +42,7 @@ const SignUpPage = ({ handleClose }) => {
                 variant="filled"
                 required
                 value={username}
-                onChange={e => setUsername(e.target.value)}
+                onChange={temp => setUsername(temp.target.value)}
             />
             <TextField
                 label="Email"
@@ -50,7 +50,7 @@ const SignUpPage = ({ handleClose }) => {
                 type="email"
                 required
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={temp => setEmail(temp.target.value)}
             />
             <TextField
                 label="Password"
@@ -58,23 +58,19 @@ const SignUpPage = ({ handleClose }) => {
                 type="password"
                 required
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={temp => setPassword(temp.target.value)}
             />
             <TextField
-                label="ConPassword"
+                label="Confirm Password"
                 variant="filled"
                 type="conPassword"
                 required
                 value={conPassword}
-                onChange={e => setConPassword(e.target.value)}
+                onChange={temp => setConPassword(temp.target.value)}
             />
-            <div>
-                <Button variant="contained" onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button type="submit" variant="contained" color="primary">
-                    Signup
-                </Button>
+        
+            <div className="d-flex flex-row justify-content-between mx-5">
+                <Link type="button" className="btn btn-primary" to="/">Signup</Link>
             </div>
         </form>
     );
