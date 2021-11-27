@@ -3,10 +3,14 @@ import { Product } from '../Models/Product';
 import { Navbar } from '../Components/Navbar';
 import { ProductList } from '../Components/ProductList';
 import { ProductSearch } from '../Components/ProductSearch';
+import {InventoryService} from "../Services/InventoryService";
 
 let str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 
 export const DashboardPage = props => {
+
+    const inventoryService = new InventoryService();
+
     const productList = [
         new Product(1, "Beer", str, "https://via.placeholder.com/350", 1, 5),
         new Product(2, "Wine", str, "https://via.placeholder.com/350", 8, 5),
@@ -21,6 +25,19 @@ export const DashboardPage = props => {
     const [ products = productList, setProducts ] = useState(undefined);
 
     useEffect(() => {
+
+        // These are both loaded in the window state as well
+        // You can access them using window.inventory and window.products (only after they're called)
+
+        // Inventory is an array of 'items' which are (InventoryItem)s
+        // InventoryItem includes stock and minVal also.
+        inventoryService.loadInventory(1, (inventory) => { // Load restaurant 1 inventory
+
+        });
+        inventoryService.loadProducts((products) => { // Returns all the products available.
+
+        });
+
         onSearch();
     }, []);
 

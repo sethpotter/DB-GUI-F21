@@ -5,7 +5,17 @@ import {InventoryItem} from "../Models/InventoryItem";
 
 export class InventoryService {
 
-    loadInventory(restaurantId) {
+    loadProducts(callback) {
+        if(window.products)
+            callback(window.products);
+        else
+            getProducts().then((products) => {
+                window.products = products;
+                callback(products);
+            });
+    }
+
+    loadInventory(restaurantId, callback) {
         const load = () => {
             getInventory(restaurantId).then((productInv) => {
                 let inventory = new Inventory(restaurantId);
@@ -17,7 +27,8 @@ export class InventoryService {
                         inventory.items.push(new InventoryItem(existing, pd.stock, pd.minVal));
                 }
                 window.inventory = inventory;
-                console.log(window.inventory);
+                console.log(inventory);
+                callback(inventory);
             });
         }
 
