@@ -2,29 +2,29 @@ import React from "react";
 
 export const ChangeStatus = (props) => { // Select from 3 statuses with select menu
     return (
-        <form>
-            <select onChange={props.changeStatus}>
-                <option value="Scheduled">Scheduled</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Delivered">Delivered</option>
-            </select>
-        </form>
+        <select onChange={props.changeStatus}>
+            <option></option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Delivered">Delivered</option>
+        </select>
+
     );
 }
 export class DeliveryComponent extends React.Component {
-    //TO-DO: find way to expand/contract based on index
+    //TO-DO: find way to expand/contract based on index (probably won't do)
     //Once status changes notify the supplier
     //Integrate adding shipments
     state = {
         button: "▼",
-        rowHeight: "1em",
+        rowHeightState: "expanded",
         status: <>{this.props.status}</>,
         proxyStatus: '',
         statusStatus: "Edit Status"
     };
 
     editStatus = () => {
-        if(this.state.statusStatus == "Edit Status"){
+        if (this.state.statusStatus == "Edit Status") {
             this.setState({
                 status: <ChangeStatus
                     id={this.props.id}
@@ -32,16 +32,20 @@ export class DeliveryComponent extends React.Component {
                     status={this.props.status}
                     changeStatus={(event) => {
                         this.props.changeStatus(event.target.value, this.props.index);
-                        this.setState({proxyStatus : event.target.value});
+                        this.setState({ proxyStatus: event.target.value });
                     }}
                 />,
                 statusStatus: "Done"
             });
-        }else{
-            this.setState({
-                status: <>{this.state.proxyStatus}</>,
-                statusStatus: "Edit Status"
-            });
+        } else {
+            if (this.state.proxyStatus == "") {
+                alert("Enter a status!");
+            } else {
+                this.setState({
+                    status: <>{this.state.proxyStatus}</>,
+                    statusStatus: "Edit Status"
+                });
+            }
         }
     }
     switchArrow = () => {
@@ -53,11 +57,12 @@ export class DeliveryComponent extends React.Component {
     }
     render() {
         let status = <></>;
+
         return (
             <tr>
                 <td>{this.props.id}</td>
-                <td>{this.props.item} <button type="button" className="expand" onCLick={this.switchArrow}>{this.state.button}</button></td>
-                <td>{this.state.status} <button type="button" onClick={this.editStatus}>{this.state.statusStatus}</button></td>
+                <td>{this.props.item} {/*<button type="button" className={this.state.rowHeightState} onClick={this.switchArrow}>{this.state.button}</button>*/}</td>
+                <td>{this.state.status} <button type="button" className="btn btn-success" onClick={this.editStatus}>{this.state.statusStatus}</button></td>
             </tr>
         );
     }
@@ -93,7 +98,7 @@ export class Deliveries extends React.Component {
             }
             displayShipments =
                 <table>
-                    <tr>
+                    <tr className="table-header table-header-deliveries">
                         <th>Shipment ID</th>
                         <th>Items</th>
                         <th>Status</th>
