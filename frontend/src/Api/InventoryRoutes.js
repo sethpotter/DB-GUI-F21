@@ -2,38 +2,30 @@ import axios from "axios";
 import {url} from "../Util/url";
 import {Product} from "../Models/Product";
 import {toQuery} from "../Util/utils";
+import {InventoryItem} from "../Models/InventoryItem";
 
-/**
- * Gets ALL available products.
- * @returns {Promise<*[]>}
- */
-const getProducts = () => {
-    return axios.get(`http://${url}:8000/product`).then(res => {
-        let products = [];
-        for(let p of res.data) {
-            products.push(new Product(p.productID, p.name, p.description, p.priceperunit, p.image, null, null));
+const getInventory = (restaurantId) => {
+    return axios.get(`http://${url}:8000/inventory/` + restaurantId).then(res => {
+        let inventory = [];
+        for(let ii of res.data) {
+            inventory.push(ii);
         }
-        return products;
+        return inventory;
     }).catch(err => {
         console.log(err.response);
         return err.response;
     });
 }
 
-/**
- * Updates a product's information globally.
- * @param product
- * @returns {Promise<*[]>}
- */
-const addProduct = (product) => {
+const addInventoryItem = (item, restaurantId) => {
     let request = {
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        image: product.image
+        restaurantId: restaurantId,
+        productId: item.product.id,
+        stock: item.stock,
+        minVal: item.minStock
     };
 
-    return axios.post(`http://${url}:8000/product` + "?" + toQuery(request)).then(res => {
+    return axios.post(`http://${url}:8000/inventory?` + toQuery(request)).then(res => {
         console.log(res);
         return true;
     }).catch(err => {
@@ -42,21 +34,15 @@ const addProduct = (product) => {
     });
 }
 
-
-/**
- * Updates a product's information globally.
- * @param product
- * @returns {Promise<*[]>}
- */
-const updateProduct = (product) => {
+const updateInventoryItem = (item, restaurantId) => {
     let request = {
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        image: product.image
+        restaurantId: restaurantId,
+        productId: item.product.id,
+        stock: item.stock,
+        minVal: item.minStock
     };
 
-    return axios.put(`http://${url}:8000/product/` + product.id + "?" + toQuery(request)).then(res => {
+    return axios.put(`http://${url}:8000/inventory?` + toQuery(request)).then(res => {
         console.log(res);
         return true;
     }).catch(err => {
@@ -65,8 +51,12 @@ const updateProduct = (product) => {
     });
 }
 
-const deleteProduct = (productId) => {
-    return axios.delete(`http://${url}:8000/product/` + productId).then(res => {
+const deleteInventoryItem = (item, restaurantId) => {
+    let request = {
+        productId: item.product.id
+    };
+
+    return axios.delete(`http://${url}:8000/inventory/` + restaurantId + "?" + toQuery(request)).then(res => {
         console.log(res);
         return true;
     }).catch(err => {
@@ -74,10 +64,11 @@ const deleteProduct = (productId) => {
         return false;
     });
 }
+
 
 export {
-    getProducts,
-    addProduct,
-    updateProduct,
-    deleteProduct
+    getInventory,
+    addInventoryItem,
+    updateInventoryItem,
+    deleteInventoryItem
 }
