@@ -74,7 +74,7 @@ export class InventoryService {
     }
 
     changeStock() {
-
+        
     }
 
     changeMinStock() {

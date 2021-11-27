@@ -367,7 +367,7 @@ module.exports = function routes(app, logger) {
 
   // TODO Delete Restaurant
 
-  /********** Supplier & Etc.. Routes **********/
+  /********** Supplier & Etc.. Routes (Unused?) **********/
 	
   // Supplier
   app.get('/Supplier', function (req, res) {

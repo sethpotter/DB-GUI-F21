@@ -10,7 +10,4 @@ export class Shipment {
         this.restaurantId = restaurantId; // The restaurant this shipment is going to.
         this.products = products;         // The products associated with this shipment.
     }
-
-    // Queries the database for shipment information given id. TODO
-    fetchShipment(id) {}
 }
