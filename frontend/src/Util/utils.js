@@ -1,6 +1,5 @@
 const isLogin = () => {
-    // add functionality to see if logged in TODO
-    return true
+    return sessionStorage.getItem("userId") > 0;
 }
 
 const toQuery = (obj) => {

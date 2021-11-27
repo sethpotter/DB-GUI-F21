@@ -63,7 +63,7 @@ const login = (username, password) => {
  */
 const getUserRestaurantIds = (user) => {
     const request = {
-        userID: user.id
+        userId: user.id
     };
 
     return axios.get(`http://${url}:8000/getRestaurantId?` + toQuery(request)).then(res => {
