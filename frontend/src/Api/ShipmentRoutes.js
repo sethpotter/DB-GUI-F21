@@ -3,6 +3,8 @@ import {url} from "../Util/url";
 import {Product} from "../Models/Product";
 import {toQuery} from "../Util/utils";
 
+/// TODO Deal with OrderDetails and Orders here. Merge these
+
 /**
  * Adds an order to the order table.
  * @param order

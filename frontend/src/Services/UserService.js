@@ -15,4 +15,8 @@ export class UserService {
         }
     }
 
+    signOut() {
+        sessionStorage.setItem("userId", null);
+    }
+
 }
