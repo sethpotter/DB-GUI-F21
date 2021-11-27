@@ -26,7 +26,9 @@ export const Navbar = props => {
 
         // Load user
         if(!window.user)
-
+            getLoggedIn().then((user) => {
+                window.user = user;
+            });
 
         console.log(window.user);
 

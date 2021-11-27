@@ -5,12 +5,14 @@ import { ProductList } from '../Components/ProductList';
 import { ProductSearch } from '../Components/ProductSearch';
 import {InventoryService} from "../Services/InventoryService";
 import {getLoggedIn} from "../Api/UserRoutes";
+import {UserService} from "../Services/UserService";
 
 let str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 
 export const DashboardPage = props => {
 
     const inventoryService = new InventoryService();
+    const userService = new UserService();
 
     const productList = [
         new Product(1, "Beer", str, "https://via.placeholder.com/350", 1, 5),
@@ -27,16 +29,15 @@ export const DashboardPage = props => {
 
     useEffect(() => {
 
-        // This fetches the user currently logged in
-
-        getLoggedIn().then((user) => {
-
-        });
-
-        // Use theses to fetch data from inventory or products
+        // UserService gets the user currently logged in.
+        // InventoryService use these to fetch data from inventory or products
 
         // Inventory is an array of 'items' which are (InventoryItem)s
         // InventoryItem includes stock and minVal also.
+
+        userService.loadUser((user) => {
+
+        });
         inventoryService.loadInventory(1, (inventory) => { // Load restaurant 1 inventory
 
         });
