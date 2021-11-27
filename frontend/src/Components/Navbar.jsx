@@ -1,36 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
-import { useHistory } from "react-router-dom"; // TODO
-
 import LogoImg from '../Resources/logo.svg';
 import BellImg from '../Resources/notification.svg';
 import DropdownImg from '../Resources/down_arrow.svg';
-
 import {User} from "../Models/User";
+import {UserService} from "../Services/UserService";
+import "../Styles/Navbar.scss";
 
-import '../Styles/Navbar.scss';
-import {getLoggedIn} from "../Api/UserRoutes";
+export const Navbar = () => {
 
-export const Navbar = props => {
+    const navigate = useNavigate();
+    const userService = new UserService();
 
     const pages = {
         'Inventory' : '/',
         'Order' : '/order',
-        'Deliveries' : 'deliveries'
+        'Deliveries' : '/deliveries'
     };
 
     const [activePage, setActivePage] = useState(Object.keys(pages)[0]);
     const [user, setUser] = useState(new User(0, "japple.seed", "", "", ""));
 
+    const handleLogOut = () => {
+        userService.signOut();
+        navigate("/login");
+    }
+
     useEffect(() => {
-
-        // Load user
-        if(!window.user)
-            getLoggedIn().then((user) => {
-                window.user = user;
-            });
-
-        console.log(window.user);
+        userService.loadUser((user) => {
+            setUser(user);
+        });
 
     }, [])
 
@@ -70,7 +70,7 @@ export const Navbar = props => {
                             <Dropdown.Item className="dropdown-item" href="/order">Order</Dropdown.Item>
                             <Dropdown.Item className="dropdown-item" href="/deliveries">Deliveries</Dropdown.Item>
                             <Dropdown.Divider/>
-                            <Dropdown.Item className="dropdown-item text-danger" href="#">Log Out</Dropdown.Item>
+                            <Dropdown.Item className="dropdown-item text-danger" onClick={() => handleLogOut()}>Log Out</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>

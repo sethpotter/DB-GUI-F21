@@ -1,6 +1,6 @@
 import {useRoutes, BrowserRouter} from 'react-router-dom';
-import {routes} from "./routes";
 import './App.scss';
+import {routes} from "./routes";
 
 const Routing = () => {
 	return useRoutes(routes);
