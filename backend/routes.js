@@ -586,7 +586,7 @@ app.get('/allOrderDetails', function (req, res) {
 
 app.put('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("UPDATE InventoryTable SET stock=? WHERE restaurantID= (?)", [req.body.stock, req.body.restaurantID], function(err, result, fields){
+        con.query("UPDATE InventoryTable SET stock=(?) WHERE restaurantID= (?)", [req.body.stock, req.body.restaurantID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
@@ -595,7 +595,7 @@ app.put('/inventoryTable', function(req, res){
 
 app.put('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock) VALUES(?)", [req.body.restaurantID, req.body.productID, req.body.stock], function(err, result, fields){
+        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock) VALUES(?, ?, ?)", [req.body.restaurantID, req.body.productID, req.body.stock], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
@@ -603,7 +603,7 @@ app.put('/inventoryTable', function(req, res){
 });
 app.put('/orderDetails', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("INSERT INTO orderDetails(orderID, productID, quantity) VALUES(?)", [req.body.orderID, req.body.productID, req.body.quantity], function(err, result, fields){
+        con.query("INSERT INTO orderDetails(orderID, productID, quantity) VALUES(?, ?, ?)", [req.body.orderID, req.body.productID, req.body.quantity], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
