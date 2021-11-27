@@ -81,8 +81,25 @@ const getUserRestaurantIds = (user) => {
     });
 }
 
+/**
+ * Returns the user that is currently logged in.
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const getLoggedIn = () => {
+    let userId = sessionStorage.getItem("userId");
+
+    return axios.get(`http://${url}:8000/user/` + userId).then(res => {
+        console.log(res.data[0]);
+        return res.data[0];
+    }).catch(err => {
+        console.log(err.response);
+        return null;
+    });
+}
+
 export {
     login,
     register,
-    getUserRestaurantIds
+    getUserRestaurantIds,
+    getLoggedIn
 }

@@ -9,6 +9,7 @@ import DropdownImg from '../Resources/down_arrow.svg';
 import {User} from "../Models/User";
 
 import '../Styles/Navbar.scss';
+import {getLoggedIn} from "../Api/UserRoutes";
 
 export const Navbar = props => {
 
@@ -22,6 +23,12 @@ export const Navbar = props => {
     const [user, setUser] = useState(new User(0, "japple.seed", "", "", ""));
 
     useEffect(() => {
+
+        // Load user
+        if(!window.user)
+
+
+        console.log(window.user);
 
     }, [])
 
