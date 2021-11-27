@@ -39,7 +39,8 @@ export const LoginPage = ({ handleClose }) => {
                 sessionStorage.setItem("userId", result.id);
                 console.log("Logged in:");
                 console.log(result);
-                handleClose();
+                navigate("/");
+                //handleClose();
             } else {
                 setErrorMsg(result);
             }
