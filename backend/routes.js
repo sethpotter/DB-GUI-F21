@@ -274,17 +274,41 @@ module.exports = function routes(app, logger) {
 
   // POST Inventory (Allows for a new stock quantity in a restaurant inventory) // TODO Test
   app.post('/inventory', (req, res) => {
-      let query = 'INSERT INTO InventoryTable(restaurantID, productID, stock) VALUES(?,?,?)';
       let rq = req.query;
-      let fields = [rq.restaurantId, rq.productId, rq.stock];
-      returnQuery(res, "Failed to add new inventory stock", query, fields);
+      let fields = [rq.restaurantId, rq.productId, rq.stock, rq.minVal];
+
+      // Check if no duplicates
+      connect(res, (sql) => {
+          sql.query('SELECT * FROM InventoryTable WHERE restaurantId = (?) AND productId = (?)', fields, (error, rows, sqlFields) => {
+              if(error) {
+                  sql.release();
+                  console.log(error);
+                  res.status(400).send("Error occurred while checking database");
+              } else {
+                  if(rows.length > 0) {
+                      sql.release();
+                      res.status(400).send("Product already exists in this inventory");
+                  } else {
+                      sql.query('INSERT INTO InventoryTable (restaurantID, productID, stock, minVal) VALUES (?,?,?,?)', fields, (error, rows, fields) => {
+                          sql.release();
+                          if(error) {
+                              console.log(error);
+                              res.status(400).send("Failed to add new inventory stock");
+                          } else {
+                              res.status(200).send(JSON.stringify(rows));
+                          }
+                      });
+                  }
+              }
+          });
+      });
   });
 
   // UPDATE Inventory (Allows for updating stock quantity in a restaurant inventory) // TODO Test
   app.put('/inventory', (req, res) => {
-      let query = 'UPDATE InventoryTable SET stock = (?) WHERE restaurantId = (?) AND productId = (?)';
+      let query = 'UPDATE InventoryTable SET stock = (?), minVal = (?) WHERE restaurantId = (?) AND productId = (?)';
       let rq = req.query;
-      let fields = [rq.stock, rq.restaurantId, rq.productId];
+      let fields = [rq.stock, rq.minVal, rq.restaurantId, rq.productId];
       returnQuery(res, "Failed to update inventory stock", query, fields);
   });
 
