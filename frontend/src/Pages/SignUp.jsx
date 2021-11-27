@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
@@ -6,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 import {UserTypes} from '../Models/User';
 import { url } from '../Util/url';
+import { register } from "../Api/UserRoutes";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,38 +27,34 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SignUpPage = ({ handleClose }) => {
+export const SignUpPage = ({ handleClose }) => {
     const classes = useStyles();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
 
-    const handleSubmit = temp => {
-        temp.preventDefault();
-        console.log(username, email, password, conPassword);
-        handleClose();
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setErrorMsg("");
+        setSuccessMsg("");
+        if(password !== conPassword) {
+            setErrorMsg("Passwords do not match");
+            return;
+        }
+        // TODO ! Important we need something for userType. There are 3 types.
+        register(username, password, 1).then((result) => {
+            if(result === "Registered account successfully")
+                setSuccessMsg(result);
+            else
+                setErrorMsg(result);
+        });
     };
 
-    const handleSignup = (event) => {
-        if(password === conPassword) {
-
-            let userType = UserTypes.EMPLOYEE; // TODO Need a box for this
-
-            // TODO No email usage?
-            // TODO No database-side duplicate checking?
-
-            // TODO Database has POST user, but it doesn't return a userId?...
-
-            axios.post(`http://${url}:8000/register?userName=${username}&password=${password}&userType=${userType}`).then(res => {
-
-            });
-
-        }
-    }
-
     return (
-        <form className={classes.root} onSubmit={handleSubmit}>
+        <form className={classes.root}>
             <TextField
                 label="Username"
                 variant="filled"
@@ -88,14 +86,13 @@ const SignUpPage = ({ handleClose }) => {
                 value={conPassword}
                 onChange={temp => setConPassword(temp.target.value)}
             />
-        
+            {(errorMsg.length > 0) ? <p className="text-danger">* {errorMsg}</p> : null}
+            {(successMsg.length > 0) ? <p className="text-success">{successMsg}</p> : null}
             <div className="d-flex flex-row justify-content-between mx-5">
-                <Link type="button" className="btn btn-primary" to="/">Signup</Link>
+                <button type="button" className="btn btn-primary" onClick={(event) => handleSubmit(event)}>Signup</button>
             </div>
             <div className="d-flex flex-row justify-content-between mx-5">
                 <Link type="button button-secondary" className="button landing-button" to="/Login">Cancel</Link></div>
         </form>
     );
 };
-
-export default SignUpPage;

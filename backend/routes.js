@@ -169,6 +169,15 @@ module.exports = function routes(app, logger) {
         var password = req.query.password;
         var usertype = req.query.usertype;
 
+        if(!username || !password || !usertype) {
+            res.status(400).send('Invalid credentials');
+            return;
+        }
+        if(username.length < 4) {
+            res.status(400).send('Username is too short');
+            return;
+        }
+
         connection.query('SELECT * FROM UserTable where username = ?', username, function (err, rows, fields) {
           if(err) {
             connection.release();
@@ -203,6 +212,11 @@ module.exports = function routes(app, logger) {
       } else {
         var username = req.query.username;
         var password = req.query.password;
+
+        if(!username || !password) {
+            res.status(400).send('Invalid credentials');
+            return;
+        }
 
         connection.query('SELECT * FROM UserTable where username = ?', username, function (err, rows, fields) {
           connection.release();
