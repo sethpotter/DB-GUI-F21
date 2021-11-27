@@ -456,8 +456,10 @@ module.exports = function routes(app, logger) {
             logger.error("Error while fetching values: \n", err);
             res.status(400).send('Username does not exist');
           } else {
-            if(rows.length === 0)
-              res.status(400).send('Username does not exist');
+            if(rows.length === 0) {
+                res.status(400).send('Username does not exist');
+                return;
+            }
             if(password === rows[0].password) {
               res.status(200).send(rows[0]);
             } else {
