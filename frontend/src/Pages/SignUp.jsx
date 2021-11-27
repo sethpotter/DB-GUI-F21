@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
+/*import Link from '@mui/material/Link';*/
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -10,7 +11,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: theme.spacing(20),
+        padding: theme.spacing(25),
 
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -18,6 +19,7 @@ const useStyles = makeStyles(theme => ({
         },
         '& .MuiButtonBase-root': {
             margin: theme.spacing(2),
+            color: 'AAD5C'
         },
     },
 }));
@@ -69,11 +71,10 @@ const SignUpPage = ({ handleClose }) => {
                 onChange={temp => setConPassword(temp.target.value)}
             />
         
+            <div className="d-flex flex-row justify-content-between mx-5"> 
+                <Link type="button" className="btn btn-primary" to="/">Signup</Link></div>
             <div className="d-flex flex-row justify-content-between mx-5">
-                <Link type="button" className="btn btn-primary" to="/">Signup</Link>
-            </div>
-            <div className="d-flex flex-row justify-content-between mx-5">
-                <Link type="button button-secondary" className="button landing-button" to="/Login">Cancel</Link></div>
+                <Link type="button button-secondary" className="button landing-button" to="/Login" /*style={{ color: '#0AAD5C' }}*/>Cancel</Link></div>
         </form>
     );
 };
