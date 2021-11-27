@@ -16,6 +16,11 @@ export class InventoryService {
     }
 
     loadInventory(restaurantId, callback) {
+        if(window.inventory) {
+            callback(window.inventory)
+            return;
+        }
+
         const load = () => {
             getInventory(restaurantId).then((productInv) => {
                 let inventory = new Inventory(restaurantId);

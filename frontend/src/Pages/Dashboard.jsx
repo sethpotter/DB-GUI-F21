@@ -4,6 +4,7 @@ import { Navbar } from '../Components/Navbar';
 import { ProductList } from '../Components/ProductList';
 import { ProductSearch } from '../Components/ProductSearch';
 import {InventoryService} from "../Services/InventoryService";
+import {getLoggedIn} from "../Api/UserRoutes";
 
 let str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 
@@ -26,8 +27,13 @@ export const DashboardPage = props => {
 
     useEffect(() => {
 
-        // These are both loaded in the window state as well
-        // You can access them using window.inventory and window.products (only after they're called)
+        // This fetches the user currently logged in
+
+        getLoggedIn().then((user) => {
+
+        });
+
+        // Use theses to fetch data from inventory or products
 
         // Inventory is an array of 'items' which are (InventoryItem)s
         // InventoryItem includes stock and minVal also.
