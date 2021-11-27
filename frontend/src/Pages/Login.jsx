@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
+import { login } from "../Api/UserRoutes";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,19 +24,30 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const LoginPage = ({ handleClose }) => {
+export const LoginPage = ({ handleClose }) => {
     const classes = useStyles();
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
-    const handleSubmit = temp => {
-        temp.preventDefault();
-        console.log(username, password);
-        handleClose();
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setErrorMsg("");
+        login(username, password).then((result) => {
+            if(result.constructor.name === "User") {
+                sessionStorage.setItem("userId", result.id);
+                console.log("Logged in:");
+                console.log(result);
+                navigate("/");
+            } else {
+                setErrorMsg(result);
+            }
+        });
     };
 
     return (
-        <form className={classes.root} onSubmit={handleSubmit}>
+        <form className={classes.root}>
             <TextField
                 label="Username"
                 variant="filled"
@@ -50,13 +63,12 @@ const LoginPage = ({ handleClose }) => {
                 value={password}
                 onChange={temp => setPassword(temp.target.value)}
             />
+            {(errorMsg.length > 0) ? <p className="text-danger">* {errorMsg}</p> : null}
             <div className="d-flex flex-row justify-content-between mx-5">
-                <Link type="button button-secondary" className="btn btn-primary" to="/">Login</Link>
+                <button type="button button-secondary" className="btn btn-primary" onClick={(event) => handleSubmit(event)}>Login</button>
             </div>
             <div className="d-flex flex-row justify-content-between mx-5">
                 <Link type="button button-secondary" className="button landing-button" to="/Signup">Signup</Link></div>
         </form>
     );
 };
-
-export default LoginPage;
