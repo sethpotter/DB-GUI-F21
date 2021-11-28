@@ -48,8 +48,8 @@ const login = (username, password) => {
         let userData = res.data;
         let user = new User(userData.userID, username, userData.email, password, userData.userType, null); // TODO GET THIS
         if(userData.userType !== UserTypes.SUPPLIER) {
-            return getUserRestaurantId({id: userData.userID}).then((res) => {
-                user.restaurantIds = res;
+            return getUserRestaurantId({id: userData.userID}).then((id) => {
+                user.restaurantId = id;
                 return user;
             });
         } else {
@@ -87,12 +87,8 @@ const deleteEmployee = (user) => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 const getUserRestaurantId = (user) => {
-    const request = {
-        userId: user.id
-    };
-
-    return axios.get(`http://${url}:8000/getRestaurantId?` + toQuery(request)).then(res => {
-        return res.data;
+    return axios.get(`http://${url}:8000/employee/` + user.id).then(res => {
+        return res.data[0].restaurantID;
     }).catch(err => {
         console.log(err.response);
         return null;
@@ -107,8 +103,10 @@ const getLoggedIn = () => {
     let userId = sessionStorage.getItem("userId");
 
     return axios.get(`http://${url}:8000/user/` + userId).then(res => {
-        console.log(res.data[0]);
-        return res.data[0];
+        let data = res.data[0];
+        return login(data.username, data.password).then((user) => {
+            return user;
+        });
     }).catch(err => {
         console.log(err.response);
         return null;
