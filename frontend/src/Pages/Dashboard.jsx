@@ -46,10 +46,10 @@ export const DashboardPage = props => {
             <div className="container margin-top">
                 <div className="panel">
                     <br/>
-                    <h1 className="ms-5 inter">Dashboard</h1>
-                    <br/>
-                    <ProductSearch onSearch={ params => setItems(onSearch(params))}/>
-                    <br/>
+                    <div>
+                        <h1 className="ps-3 inter text-muted">Dashboard</h1>
+                        <ProductSearch onSearch={ params => setItems(onSearch(params))}/>
+                    </div>
                 </div>
             </div>
             <ProductList items={items}/>
