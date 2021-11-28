@@ -32,7 +32,6 @@ export class InventoryService {
                         inventory.items.push(new InventoryItem(existing, pd.stock, pd.minVal));
                 }
                 window.inventory = inventory;
-                console.log(inventory);
                 callback(inventory);
             });
         }

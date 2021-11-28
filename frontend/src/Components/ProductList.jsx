@@ -5,32 +5,32 @@ import { Card, CardActions, CardContent,CardMedia, Button,
 
 export const ProductList = props => {
 
-    const [product, setProduct] = useState(undefined);
+    const [item, setItem] = useState(undefined);
     const [isOpen, setIsOpen] = useState(false);
 
     const togglePopup = () => {
       setIsOpen(!isOpen);
     }
 
-    const productArray = props.products.map( product => (
+    const productArray = props.inventory.items.map(item => (
         <Grid item xs={2} sm={4} md={4}>
             <Card style={{flex: 1, width:'24rem', margin:'1rem', float:true}}>
                 <CardMedia
                 component="img"
                 height="200rem"
-                image={product.image}
+                image={item.product.image}
                 alt="ProductImage"
                 />
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                {product.name}
+                {item.product.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                {product.description}
+                {item.product.description}
                 </Typography>
             </CardContent>
             <CardActions className="">
-                <Button size="small" onClick={() => {togglePopup(); setProduct(product);}} >More Details</Button>
+                <Button size="small" onClick={() => {togglePopup(); setItem(item);}} >More Details</Button>
             </CardActions>
             </Card>
         </Grid>
@@ -44,7 +44,7 @@ export const ProductList = props => {
         open={isOpen}
         onClose={togglePopup}
       >
-        <Popup product={product}/>
+        <Popup item={item}/>
       </Modal>
       }
         <Container>
@@ -52,7 +52,6 @@ export const ProductList = props => {
                 {productArray}
             </Grid>
         </Container>
-
     </div>
     );
 

@@ -13,7 +13,7 @@ const Popup = props => {
   }
 
 
-  let background = (props.product.stock < props.product.minStock) ? '#FAA0A0': '#F0EAD6'
+  let background = (props.item.stock < props.item.minStock) ? '#FAA0A0': '#F0EAD6'
   
   const useStyles = makeStyles(theme => ({
       modal: {
@@ -40,17 +40,17 @@ const Popup = props => {
           <div>
             <CardMedia
               component="img"
-              image={props.product.image}
+              image={props.item.product.image}
               alt="ProductImage"
               />
           </div>
           
           <br />
-          <h2>Name: {props.product.name}</h2>
-          <p>Id: {props.product.id}</p>
-          <p>Description: {props.product.description}</p>
-          <p>Current Stock: {props.product.stock}</p>
-          <p className="round">Minimum Stock: {props.product.minStock}</p>
+          <h2>Name: {props.item.product.name}</h2>
+          <p>Id: {props.item.product.id}</p>
+          <p>Description: {props.item.product.description}</p>
+          <p>Current Stock: {props.item.stock}</p>
+          <p className="round">Minimum Stock: {props.item.minStock}</p>
       </div>
   );
 };
