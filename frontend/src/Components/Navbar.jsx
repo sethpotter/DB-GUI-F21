@@ -20,7 +20,7 @@ export const Navbar = () => {
     };
 
     const [activePage, setActivePage] = useState(Object.keys(pages)[0]);
-    const [user, setUser] = useState(new User(0, "japple.seed", "", "", ""));
+    const [user, setUser] = useState(new User(0, "", "", "", ""));
 
     const handleLogOut = () => {
         userService.signOut();

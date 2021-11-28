@@ -46,7 +46,7 @@ const login = (username, password) => {
 
     return axios.get(`http://${url}:8000/login?` + toQuery(request)).then(res => {
         let userData = res.data;
-        let user = new User(userData.userID, username, userData.email, password, userData.userType, null); // TODO GET THIS
+        let user = new User(userData.userID, username, userData.email, password, userData.userType, null);
         if(userData.userType !== UserTypes.SUPPLIER) {
             return getUserRestaurantId({id: userData.userID}).then((id) => {
                 user.restaurantId = id;
