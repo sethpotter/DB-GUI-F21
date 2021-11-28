@@ -72,6 +72,7 @@ export class InventoryService {
         }
     }
 
+    // TODO Add
     changeStock() {
         
     }
