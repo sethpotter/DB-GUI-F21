@@ -9,10 +9,10 @@ export const ProductList = props => {
     const [isOpen, setIsOpen] = useState(false);
 
     const togglePopup = () => {
-      setIsOpen(!isOpen);
+        setIsOpen(!isOpen);
     }
 
-    const productArray = props.inventory.items.map(item => (
+    const productArray = props.items.map(item => (
         <Grid item xs={2} sm={4} md={4}>
             <Card style={{flex: 1, width:'24rem', margin:'1rem', float:true}}>
                 <CardMedia
@@ -37,22 +37,22 @@ export const ProductList = props => {
     ));
 
     return (
-    <div className="">
-      {isOpen && <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        open={isOpen}
-        onClose={togglePopup}
-      >
-        <Popup item={item}/>
-      </Modal>
-      }
-        <Container>
-            <Grid container spacing={{ xs: 3, md: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {productArray}
-            </Grid>
-        </Container>
-    </div>
+        <div className="">
+          {isOpen && <Modal
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+            open={isOpen}
+            onClose={togglePopup}
+          >
+            <Popup item={item}/>
+          </Modal>
+          }
+            <Container>
+                <Grid container spacing={{ xs: 3, md: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {productArray}
+                </Grid>
+            </Container>
+        </div>
     );
 
 };

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Product } from '../Models/Product';
 import { Navbar } from '../Components/Navbar';
 import { ProductList } from '../Components/ProductList';
 import { ProductSearch } from '../Components/ProductSearch';
 import { InventoryService } from "../Services/InventoryService";
 import { UserService } from "../Services/UserService";
-import {Inventory} from "../Models/Inventory";
-import {User} from "../Models/User";
+import { Inventory } from "../Models/Inventory";
+import { User } from "../Models/User";
+import "../Styles/Dashboard.scss";
 
 export const DashboardPage = props => {
 
@@ -14,6 +14,8 @@ export const DashboardPage = props => {
     const userService = new UserService();
 
     const [ inventory, setInventory ] = useState(new Inventory());
+    const [ items, setItems ] = useState([]); // Used for search
+
     const [ user, setUser ] = useState(new User());
 
     useEffect(() => {
@@ -21,6 +23,7 @@ export const DashboardPage = props => {
             setUser(user);
             inventoryService.loadInventory(user.restaurantId, (inventory) => {
                 setInventory(inventory);
+                setItems(inventory.items);
             });
         });
 
@@ -29,7 +32,7 @@ export const DashboardPage = props => {
 
     let onSearch = params => {
         if(!params)
-            return inventory;
+            return inventory.items;
 
         return inventory.items.filter((item) => {
             const productName = item.product.name.toLowerCase();
@@ -39,14 +42,18 @@ export const DashboardPage = props => {
 
     return <>
         <Navbar />
-        <br />
-        <div className="container margin-top">
-            <h1 className="">Dashboard</h1>
-            <br />
-            <ProductSearch onSearch={ params => setInventory(onSearch(params))}/>
-            <br />
+        <div className="dashboard-root">
+            <div className="container margin-top">
+                <div className="panel">
+                    <br/>
+                    <h1 className="ms-5 inter">Dashboard</h1>
+                    <br/>
+                    <ProductSearch onSearch={ params => setItems(onSearch(params))}/>
+                    <br/>
+                </div>
+            </div>
+            <ProductList items={items}/>
         </div>
-        <ProductList inventory={inventory}/>
     </>
 
 }
