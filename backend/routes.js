@@ -601,7 +601,7 @@ app.put('/inventoryTable', function(req, res){
 	});
     });
 });
-app.put('/orderDetails', function(req, res){
+app.post('/orderDetails', function(req, res){
     pool.getConnection(function (err, con){
         con.query("INSERT INTO orderDetails(orderID, productID, quantity) VALUES(?, ?, ?)", [req.body.orderID, req.body.productID, req.body.quantity], function(err, result, fields){
             if(err) throw err;
