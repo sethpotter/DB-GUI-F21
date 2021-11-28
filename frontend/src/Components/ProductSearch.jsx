@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { } from '@material-ui/core';
+import {UserTypes} from "../Models/User";
+import {InventoryService} from "../Services/InventoryService";
 
 export const ProductSearch = props => {
     const [ name, setName ] = useState("");
+    const [ restaurant, setRestaurant ] = useState("");
+
+    const inventoryService = new InventoryService();
+
+    let handleChangeInventory = () => {
+        /// TODO Find restaurant id using service.
+        //inventoryService.loadInventory()
+    }
 
     let filter =
         <div className="d-flex flex-row">
@@ -47,16 +56,29 @@ export const ProductSearch = props => {
                 </div>
             </div>
         </div>
-        
 
-    
+    let supplierControl =
+        <div className="d-flex flex-row align-items-center panel p-3">
+            <div className="form-group flex-grow-1 mb-2">
+                <label className="mb-2">Load Restaurant Inventory</label>
+                <div className="d-flex flex-row">
+                    <input type="text"
+                           id="search_restaurant"
+                           name="search_restaurant"
+                           value={ restaurant }
+                           className="form-control flex-grow-1 me-3"
+                           onChange={ event => setRestaurant(event.target.value) } />
+                    <button type="button" className="btn btn-warning inter" onClick={ () => handleChangeInventory() } >Load</button>
+                </div>
+            </div>
+        </div>
 
     return (
         <>
-            <div className="d-flex flex-row justify-content-center">
-                <div className="d-flex flex-row w-50 align-items-center panel p-3 me-3">
+            <div className="d-flex flex-row justify-content-center gap-2">
+                <div className="d-flex flex-row w-50 align-items-center panel p-3">
                     <div className="form-group flex-grow-1 mb-2">
-                        <label className="pb-3" htmlFor="search_name">Search Product</label>
+                        <label className="mb-2" htmlFor="search_name">Search Product</label>
                         <div className="d-flex flex-row">
                             <input type="text"
                                    id="search_name"
@@ -74,6 +96,7 @@ export const ProductSearch = props => {
                         {filter}
                     </div>
                 </div>
+                {(window.user !== null && window.user.userType === UserTypes.SUPPLIER) ? supplierControl : null}
             </div>
         </>
     );
