@@ -12,7 +12,7 @@ import PrivateRoute from './Util/PrivateRoute';
 
 // React functional component
 function App () {
-  // state for storage of the information on the webpage of forms and list, uses hooks
+  // state for storage of the information on the webpage of forms and list, uses hooks // close
   const [number, setNumber] = useState("")
   const [values, setValues] = useState([])
 
