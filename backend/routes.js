@@ -145,6 +145,12 @@ module.exports = function routes(app, logger) {
         returnQuery(res, 'SELECT * FROM restaurantEmployee');
     });
 
+    // GET All Employees
+    app.get('/employee/:userId', (req, res) => {
+        let userId = req.param('userId');
+        returnQuery(res, 'SELECT * FROM restaurantEmployee WHERE userID = (?)', userId);
+    });
+
     // GET RestaurantId via UserId (Links Employee to Restaurant) // TODO Test
     app.get('/getRestaurantId', (req, res) => {
         let userId = req.query.userId;

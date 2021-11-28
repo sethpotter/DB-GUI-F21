@@ -1,4 +1,4 @@
-import {PrivateRoute} from "./Util/PrivateRoute";
+import {LoggedIn, LoggedOut} from "./Util/PrivateRoute";
 import {
     LoginPage,
     SignUpPage,
@@ -8,9 +8,9 @@ import {
 } from "./Pages";
 
 export const routes = [
-    { path: "/login", element: <LoginPage/> },
-    { path: "/signup", element: <SignUpPage/> },
-    { path: "/", element: <PrivateRoute><DashboardPage/></PrivateRoute> },
-    { path: "/deliveries", element: <PrivateRoute><Deliveries/></PrivateRoute> },
-    { path: "/order", element: <PrivateRoute><OrderPage/></PrivateRoute> }
+    { path: "/login", element: <LoggedIn><LoginPage/></LoggedIn> },
+    { path: "/signup", element: <LoggedIn><SignUpPage/></LoggedIn> },
+    { path: "/", element: <LoggedOut><DashboardPage/></LoggedOut> },
+    { path: "/deliveries", element: <LoggedOut><Deliveries/></LoggedOut> },
+    { path: "/order", element: <LoggedOut><OrderPage/></LoggedOut> }
 ]

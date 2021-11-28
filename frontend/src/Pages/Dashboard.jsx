@@ -35,11 +35,12 @@ export const DashboardPage = props => {
         // Inventory is an array of 'items' which are (InventoryItem)s
         // InventoryItem includes stock and minVal also.
 
-        /*userService.loadUser((user) => {
+        userService.loadUser((user) => {
             setUser(user);
+            console.log(user);
         });
 
-        inventoryService.loadInventory(user.restaurantId, (inventory) => { // Load restaurant 1 inventory
+        /*inventoryService.loadInventory(user.restaurantId, (inventory) => { // Load restaurant 1 inventory
             setInventory(inventory);
         });
 
