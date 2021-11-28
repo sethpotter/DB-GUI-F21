@@ -3,9 +3,8 @@ import { Product } from '../Models/Product';
 import { Navbar } from '../Components/Navbar';
 import { ProductList } from '../Components/ProductList';
 import { ProductSearch } from '../Components/ProductSearch';
-import {InventoryService} from "../Services/InventoryService";
-import {getLoggedIn} from "../Api/UserRoutes";
-import {UserService} from "../Services/UserService";
+import { InventoryService } from "../Services/InventoryService";
+import { UserService } from "../Services/UserService";
 
 let str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 
@@ -25,7 +24,8 @@ export const DashboardPage = props => {
         new Product(8, "Tilapia", str, "https://via.placeholder.com/350", 4.5, 10)
     ]
 
-    const [ products = productList, setProducts ] = useState(undefined);
+    const [ inventory, setInventory ] = useState(undefined);
+    const [ user, setUser ] = useState(undefined);
 
     useEffect(() => {
 
@@ -35,15 +35,17 @@ export const DashboardPage = props => {
         // Inventory is an array of 'items' which are (InventoryItem)s
         // InventoryItem includes stock and minVal also.
 
-        userService.loadUser((user) => {
-
+        /*userService.loadUser((user) => {
+            setUser(user);
         });
-        inventoryService.loadInventory(1, (inventory) => { // Load restaurant 1 inventory
 
+        inventoryService.loadInventory(user.restaurantId, (inventory) => { // Load restaurant 1 inventory
+            setInventory(inventory);
         });
+
         inventoryService.loadProducts((products) => { // Returns all the products available.
 
-        });
+        });*/
 
         onSearch();
     }, []);
@@ -66,10 +68,10 @@ export const DashboardPage = props => {
         <div className="container margin-top">
             <h1 className="">Dashboard</h1>
             <br />
-            <ProductSearch onSearch={ params => setProducts(onSearch(params))}/>
+            {/*<ProductSearch onSearch={ params => setProducts(onSearch(params))}/>*/}
             <br />
         </div>
-        <ProductList products={products}/>
+        {/*<ProductList products={products}/>*/}
 
     </>
 
