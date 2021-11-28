@@ -23,6 +23,8 @@ export const SignUpPage = ({ handleClose }) => {
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
 
+    //
+
     const handleSubmit = (event) => {
         event.preventDefault();
         setErrorMsg("");
