@@ -8,17 +8,22 @@ import {User, UserTypes} from "../Models/User";
  * Returns an appropriate message if success or failed.
  * @param username
  * @param password
+ * @param email
+ * @param restaurantName
  * @param usertype
  * @returns {Promise<AxiosResponse<any> | T>}
  */
-const register = (username, password, usertype) => {
+const register = (username, password, email, restaurantName, usertype) => {
     const request = {
         username: username,
         password: password,
-        usertype: usertype
+        usertype: usertype,
+        email: email,
+        restaurantName: restaurantName
     };
 
     return axios.post(`http://${url}:8000/register?` + toQuery(request)).then(res => {
+        console.log(res);
         return res.data;
     }).catch(err => {
         console.log(err.response);
@@ -41,9 +46,9 @@ const login = (username, password) => {
 
     return axios.get(`http://${url}:8000/login?` + toQuery(request)).then(res => {
         let userData = res.data;
-        let user = new User(userData.userID, username, null, password, userData.userType, null);
+        let user = new User(userData.userID, username, userData.email, password, userData.userType, null); // TODO GET THIS
         if(userData.userType !== UserTypes.SUPPLIER) {
-            return getUserRestaurantIds({id: userData.userID}).then((res) => {
+            return getUserRestaurantId({id: userData.userID}).then((res) => {
                 user.restaurantIds = res;
                 return user;
             });
@@ -56,25 +61,38 @@ const login = (username, password) => {
     });
 }
 
+const deleteUser = (user) => {
+    return axios.delete(`http://${url}:8000/user/` + user.id).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
+const deleteEmployee = (user) => {
+    return axios.delete(`http://${url}:8000/employee/` + user.id).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
 /**
- * Gets all the restaurantIds a user is associated with.
+ * Gets the restaurantId a user is associated with.
  * @param user
  * @returns {Promise<AxiosResponse<any>>}
  */
-const getUserRestaurantIds = (user) => {
+const getUserRestaurantId = (user) => {
     const request = {
         userId: user.id
     };
 
     return axios.get(`http://${url}:8000/getRestaurantId?` + toQuery(request)).then(res => {
-        let restaurants = [];
-        for(let wrap of res.data) {
-            restaurants.push(wrap.restaurantID);
-        }
-        if(restaurants.length > 0)
-            return restaurants;
-        else
-            return null;
+        return res.data;
     }).catch(err => {
         console.log(err.response);
         return null;
@@ -100,6 +118,8 @@ const getLoggedIn = () => {
 export {
     login,
     register,
-    getUserRestaurantIds,
+    deleteUser,
+    deleteEmployee,
+    getUserRestaurantId,
     getLoggedIn
 }

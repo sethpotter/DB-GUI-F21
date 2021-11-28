@@ -5,12 +5,12 @@ export const UserTypes = {
 }
 
 export class User {
-    constructor(id, username, email, password, userType, restaurantIds) {
+    constructor(id, username, email, password, userType, restaurantId) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.userType = userType;
-        this.restaurantIds = restaurantIds; // [] Array type
+        this.restaurantId = restaurantId;
     }
 }
