@@ -612,7 +612,7 @@ app.post('/orderDetails', function(req, res){
 
 app.delete('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("DELETE FROM InventoryTable WHERE restaurantID= (?) && productID= (?)", [req.body.restaurantID, req.body.productID], function(err, result, fields){
+        con.query("DELETE FROM InventoryTable WHERE restaurantID= (?) AND productID= (?)", [req.body.restaurantID, req.body.productID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
