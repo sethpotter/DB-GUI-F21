@@ -5,12 +5,16 @@ import TextField from '@material-ui/core/TextField';
 import { login } from "../Api/UserRoutes";
 import "../Styles/Login.scss";
 import logo from "../Resources/logo.svg";
+import {UserService} from "../Services/UserService";
 
 export const LoginPage = ({ handleClose }) => {
+
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
+
+    const userService = new UserService();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -18,10 +22,15 @@ export const LoginPage = ({ handleClose }) => {
         login(username, password).then((result) => {
             if(result.constructor.name === "User") {
                 sessionStorage.setItem("userId", result.id);
+
                 console.log("Logged in:");
                 console.log(result);
-                navigate("/");
-                //handleClose();
+
+                userService.loadUser((user) => {
+                    console.log("Loaded User:");
+                    console.log(userService.getUser());
+                    navigate("/");
+                });
             } else {
                 setErrorMsg(result);
             }

@@ -13,7 +13,7 @@ export const ConfirmPopup = props => {
 
     return (
         <>
-            <Modal centered show={props.show}>
+            <Modal centered onHide={() => props.toggleShow()} show={props.show}>
                 <Modal.Header>
                     <Modal.Title>Are you sure?</Modal.Title>
                 </Modal.Header>

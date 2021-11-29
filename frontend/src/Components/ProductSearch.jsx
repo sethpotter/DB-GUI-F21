@@ -3,13 +3,17 @@ import {UserTypes} from "../Models/User";
 import {InventoryService} from "../Services/InventoryService";
 import {RestaurantService} from "../Services/RestaurantService";
 import {InventoryItem} from "../Models/InventoryItem";
+import {UserService} from "../Services/UserService";
 
 export const ProductSearch = props => {
+
     const [ name, setName ] = useState("");
     const [ restaurantName, setRestaurantName ] = useState("");
+    const [ invalidName, setInvalidName ] = useState(false);
 
     const [ addProduct, setAddProduct ] = useState(null);
 
+    const userService = new UserService();
     const inventoryService = new InventoryService();
     const restaurantService = new RestaurantService();
 
@@ -24,7 +28,7 @@ export const ProductSearch = props => {
                     props.doRefresh();
                 });
             else
-                console.log("restaurant not found"); // TODO error msg
+                setInvalidName(true);
         });
     }
 
@@ -90,8 +94,9 @@ export const ProductSearch = props => {
                                id="search_restaurant"
                                name="search_restaurant"
                                value={ restaurantName }
-                               className="form-control flex-grow-1 me-3"
-                               onChange={ event => setRestaurantName(event.target.value) } />
+                               className={(invalidName) ? "form-control flex-grow-1 me-3 is-invalid" : "form-control flex-grow-1 me-3"}
+                               onChange={ event => { setInvalidName(false); setRestaurantName(event.target.value); }}
+                        />
                         <button type="button" className="btn btn-danger inter" onClick={ () => handleChangeInventory() } >Load</button>
                     </div>
                 </div>
@@ -135,7 +140,7 @@ export const ProductSearch = props => {
                         </div>
                     </div>
                 </div>
-                {(window.user !== undefined && window.user.userType === UserTypes.SUPPLIER) ? supplierControl : null}
+                {(userService.hasUser() && userService.getUser().userType === UserTypes.SUPPLIER) ? supplierControl : null}
             </div>
         </>
     );

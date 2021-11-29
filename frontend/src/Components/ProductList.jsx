@@ -7,17 +7,20 @@ import trashIcon from '../Resources/trash.svg';
 import {InventoryItem} from "../Models/InventoryItem";
 import {Product} from "../Models/Product";
 import {InventoryService} from "../Services/InventoryService";
+import {UserService} from "../Services/UserService";
+import {UserTypes} from "../Models/User";
 
 export const ProductList = props => {
 
     const inventoryService = new InventoryService();
+    const userService = new UserService();
 
     const [item, setItem] = useState(new InventoryItem(new Product(0, ""), 0, 0));
-    const [isOpen, setIsOpen] = useState(false);
+    const [productOpen, setProductOpen] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
 
-    const togglePopup = () => {
-        setIsOpen(!isOpen);
+    const toggleProductPopup = () => {
+        setProductOpen(!productOpen);
     }
 
     const toggleConfirmPopup = () => {
@@ -48,12 +51,16 @@ export const ProductList = props => {
                 </Typography>
             </CardContent>
             <CardActions className="justify-content-between">
-                <Button size="small" onClick={() => {togglePopup(); setItem(item);}} >More Details</Button>
-                <div className="d-flex flex-row">
-                    <button className="trash-btn" onClick={() => {toggleConfirmPopup(); setItem(item);}}>
-                        <img className="pb-1" src={trashIcon} alt="Delete Item"/>
-                    </button>
-                </div>
+                <Button size="small" onClick={() => {toggleProductPopup(); setItem(item);}} >More Details</Button>
+                {(userService.hasUser() && userService.getUser().userType === UserTypes.SUPPLIER) // TODO Or Manager
+                    ?
+                    <div className="d-flex flex-row">
+                        <button className="trash-btn" onClick={() => {toggleConfirmPopup(); setItem(item);}}>
+                            <img className="pb-1" src={trashIcon} alt="Delete Item"/>
+                        </button>
+                    </div>
+                    : null
+                }
             </CardActions>
             </Card>
         </Grid>
@@ -61,15 +68,7 @@ export const ProductList = props => {
 
     return (
         <div className="">
-            {isOpen && <Modal
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-                open={isOpen}
-                onClose={togglePopup}
-              >
-                <ProductPopup item={item}/>
-              </Modal>
-            }
+            <ProductPopup item={item} show={productOpen} toggleShow={() => toggleProductPopup()}/>
             <ConfirmPopup message={"Do you want to delete " + item.product.name + " from this inventory?"}
                           show={confirmOpen}
                           toggleShow={() => toggleConfirmPopup()}

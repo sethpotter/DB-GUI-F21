@@ -15,15 +15,13 @@ export const DashboardPage = props => {
 
     const [ items, setItems ] = useState([]); // Used for search
 
-    const [ user, setUser ] = useState(new User());
-
     useEffect(() => {
         //if(inventoryService.hasInventory())
         //    setItems(inventoryService.getInventory().items);
 
         userService.loadUser((user) => {
-            setUser(user);
-
+            console.log("Dashboard Loading User: ");
+            console.log(user);
             if(user.userType !== UserTypes.SUPPLIER) {
                 if(!inventoryService.hasInventory()) // Should probably do the same for userService.
                     inventoryService.loadInventory(user.restaurantId, (inventory) => {
@@ -51,37 +49,41 @@ export const DashboardPage = props => {
 
     return <>
         <Navbar />
-        <div className="dashboard-root">
-            <div className="container margin-top">
-                <div className="panel">
-                    <br/>
-                    <div>
-                        <h1 className="ps-5 inter text-muted fw-light">Dashboard</h1>
-                        <ProductSearch doRefresh={() => refresh()} onSearch={ params => setItems(onSearch(params))}/>
+        {(userService.hasUser())
+            ? <div className="dashboard-root">
+                <div className="container margin-top">
+                    <div className="panel">
+                        <br/>
+                        <div>
+                            <h1 className="ps-5 inter text-muted fw-light">Dashboard</h1>
+                            <ProductSearch doRefresh={() => refresh()} onSearch={params => setItems(onSearch(params))}/>
+                        </div>
                     </div>
                 </div>
+                {(inventoryService.hasInventory()) ? <ProductList doRefresh={() => refresh()} items={items}/> :
+                    <div>
+                        <center>
+                            <h2 className="mt-5 inter text-muted fw-bold">No Inventory Loaded</h2>
+                            <h5 className="inter text-muted fw-light">Type a restaurant name and click the load
+                                button.</h5>
+                        </center>
+                    </div>
+                }
+                {(inventoryService.hasInventory() && items.length === 0)
+                    ? <div>
+                        <center>
+                            <h2 className="mt-5 inter text-muted fw-bold">No Products were Found</h2>
+                            {(inventoryService.getInventory().items.length === 0)
+                                ? <h5 className="inter text-muted fw-light">This inventory is empty.</h5>
+                                : <h5 className="inter text-muted fw-light">Try a different search term.</h5>
+                            }
+                        </center>
+                    </div>
+                    : null
+                }
             </div>
-            {(inventoryService.hasInventory()) ? <ProductList doRefresh={() => refresh()} items={items}/> :
-                <div>
-                    <center>
-                        <h2 className="mt-5 inter text-muted fw-bold">No Inventory Loaded</h2>
-                        <h5 className="inter text-muted fw-light">Type a restaurant name and click the load button.</h5>
-                    </center>
-                </div>
-            }
-            {(inventoryService.hasInventory() && items.length === 0) ?
-                <div>
-                    <center>
-                        <h2 className="mt-5 inter text-muted fw-bold">No Products were Found</h2>
-                        {(inventoryService.getInventory().items.length === 0)
-                            ? <h5 className="inter text-muted fw-light">This inventory is empty.</h5>
-                            : <h5 className="inter text-muted fw-light">Try a different search term.</h5>
-                        }
-                    </center>
-                </div>
-                : null
-            }
-        </div>
+            : <center><h1 className="fw-light mt-5">Loading...</h1></center>
+        }
     </>
 
 }
