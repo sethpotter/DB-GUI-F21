@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles, CardMedia} from '@material-ui/core';
 
-const Popup = props => {
+const ProductPopup = props => {
   function getModalStyle() {
       const top = 45 ;
       const left = 50 ;
@@ -14,7 +14,7 @@ const Popup = props => {
 
 
   let background = (props.item.stock < props.item.minStock) ? '#FAA0A0': '#F0EAD6'
-  
+
   const useStyles = makeStyles(theme => ({
       modal: {
           display: 'flex',
@@ -55,4 +55,4 @@ const Popup = props => {
   );
 };
 
-export default Popup;
+export default ProductPopup;

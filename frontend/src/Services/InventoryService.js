@@ -1,9 +1,21 @@
 import {Inventory} from "../Models/Inventory";
-import {getProducts} from "../Api/ProductRoutes";
+import {getProducts, getProduct} from "../Api/ProductRoutes";
 import {getInventory, addInventoryItem, updateInventoryItem, deleteInventoryItem} from "../Api/InventoryRoutes";
 import {InventoryItem} from "../Models/InventoryItem";
+import {Product} from "../Models/Product";
 
 export class InventoryService {
+
+    hasInventory() {
+        return (this.getInventory() !== null);
+    }
+
+    getInventory() {
+        if(window.inventory)
+            return window.inventory;
+        else
+            return null;
+    }
 
     loadProducts(callback) {
         if(window.products)
@@ -15,12 +27,14 @@ export class InventoryService {
             });
     }
 
-    loadInventory(restaurantId, callback) {
-        if(window.inventory) {
-            callback(window.inventory)
-            return;
-        }
+    loadProduct(id, callback) {
+        getProduct(id).then((product) => {
+            console.log(product);
+            callback(product);
+        });
+    }
 
+    loadInventory(restaurantId, callback) {
         const load = () => {
             getInventory(restaurantId).then((productInv) => {
                 let inventory = new Inventory(restaurantId);
@@ -46,7 +60,7 @@ export class InventoryService {
         }
     }
 
-    addItem(item) {
+    addItem(item, callback) {
         let inventory = window.inventory;
         if(inventory) {
             addInventoryItem(item, inventory.restaurantId).then((valid) => {
@@ -54,19 +68,21 @@ export class InventoryService {
                     inventory.items.push(item);
                     console.log("Added: ");
                     console.log(item);
+                    callback();
                 }
             });
         }
     }
 
-    removeItem(item) {
+    removeItem(item, callback) {
         let inventory = window.inventory;
         if(inventory) {
             deleteInventoryItem(item, inventory.restaurantId).then((valid) => {
                 if(valid) {
-                    inventory = inventory.items.filter(i => i.product.id !== item.product.id);
+                    inventory.items = inventory.items.filter(i => i.product.id !== item.product.id);
                     console.log("Removed: ");
                     console.log(item);
+                    callback();
                 }
             });
         }
@@ -79,9 +95,5 @@ export class InventoryService {
 
     changeMinStock() {
 
-    }
-
-    clear() {
-        window.inventory = undefined;
     }
 }

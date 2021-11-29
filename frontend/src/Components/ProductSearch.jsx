@@ -1,26 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import {UserTypes} from "../Models/User";
 import {InventoryService} from "../Services/InventoryService";
+import {RestaurantService} from "../Services/RestaurantService";
+import {InventoryItem} from "../Models/InventoryItem";
 
 export const ProductSearch = props => {
     const [ name, setName ] = useState("");
-    const [ restaurant, setRestaurant ] = useState("");
+    const [ restaurantName, setRestaurantName ] = useState("");
 
     const [ addProduct, setAddProduct ] = useState(null);
 
     const inventoryService = new InventoryService();
+    const restaurantService = new RestaurantService();
 
     useEffect(() => {
         inventoryService.loadProducts((products) => {});
     }, []);
 
     let handleChangeInventory = () => {
-        /// TODO Find restaurant id using service.
-        //inventoryService.loadInventory()
+        restaurantService.loadRestaurantByName(restaurantName, (restaurant) => {
+            if(restaurant !== null)
+                inventoryService.loadInventory(restaurant.id, (inventory) => {
+                    props.doRefresh();
+                });
+            else
+                console.log("restaurant not found"); // TODO error msg
+        });
     }
 
-    let handleAddProduct = () => {
-        console.log(addProduct);
+    let handleAdd = () => {
+        inventoryService.loadProduct(addProduct, (product) => {
+            inventoryService.addItem(new InventoryItem(product, 0, 0), () => {
+                props.doRefresh();
+            });
+        })
     }
 
     let filter =
@@ -76,9 +89,9 @@ export const ProductSearch = props => {
                         <input type="text"
                                id="search_restaurant"
                                name="search_restaurant"
-                               value={ restaurant }
+                               value={ restaurantName }
                                className="form-control flex-grow-1 me-3"
-                               onChange={ event => setRestaurant(event.target.value) } />
+                               onChange={ event => setRestaurantName(event.target.value) } />
                         <button type="button" className="btn btn-danger inter" onClick={ () => handleChangeInventory() } >Load</button>
                     </div>
                 </div>
@@ -91,7 +104,7 @@ export const ProductSearch = props => {
                             <option selected value="">...</option>
                             {(window.products !== undefined) ? window.products.map((p) => <option value={p.id}>{p.name}</option>) : null}
                         </select>
-                        <button type="button" className="btn btn-secondary inter" onClick={ () => handleAddProduct() } >Add</button>
+                        <button type="button" className="btn btn-secondary inter" onClick={ () => handleAdd() }>Add</button>
                     </div>
                 </div>
             </div>
