@@ -10,10 +10,11 @@ import {Restaurant} from "../Models/Restaurant";
  */
 const getRestaurantById = (id) => {
     return axios.get(`http://${url}:8000/restaurant/` + id).then(res => {
+        console.log(res);
         let resData = res.data[0];
         return new Restaurant(id, resData.name, resData.dateJoined, resData.active);
     }).catch(err => {
-        console.log(err.response);
+        console.log(err);
         return null;
     });
 }

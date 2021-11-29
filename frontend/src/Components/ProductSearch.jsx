@@ -33,11 +33,12 @@ export const ProductSearch = props => {
     }
 
     let handleAdd = () => {
-        inventoryService.loadProduct(addProduct, (product) => {
-            inventoryService.addItem(new InventoryItem(product, 0, 0), () => {
-                props.doRefresh();
+        if(addProduct)
+            inventoryService.loadProduct(addProduct, (product) => {
+                inventoryService.addItem(new InventoryItem(product, 0, 0), () => {
+                    props.doRefresh();
+                });
             });
-        })
     }
 
     let filter =
