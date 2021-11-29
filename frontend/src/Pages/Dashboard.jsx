@@ -18,8 +18,8 @@ export const DashboardPage = props => {
     const [ user, setUser ] = useState(new User());
 
     useEffect(() => {
-        if(inventoryService.hasInventory())
-            setItems(inventoryService.getInventory().items);
+        //if(inventoryService.hasInventory())
+        //    setItems(inventoryService.getInventory().items);
 
         userService.loadUser((user) => {
             setUser(user);
