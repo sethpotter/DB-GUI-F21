@@ -5,7 +5,7 @@ import { ProductSearch } from '../Components/ProductSearch';
 import { InventoryService } from "../Services/InventoryService";
 import { UserService } from "../Services/UserService";
 import { Inventory } from "../Models/Inventory";
-import { User } from "../Models/User";
+import {User, UserTypes} from "../Models/User";
 import "../Styles/Dashboard.scss";
 
 export const DashboardPage = props => {
@@ -19,15 +19,20 @@ export const DashboardPage = props => {
     const [ user, setUser ] = useState(new User());
 
     useEffect(() => {
+        inventoryService.clear();
+        setInventory(new Inventory());
+        setItems([]);
+
         userService.loadUser((user) => {
             setUser(user);
-            inventoryService.loadInventory(user.restaurantId, (inventory) => {
-                setInventory(inventory);
-                setItems(inventory.items);
-            });
-        });
 
-        onSearch();
+            if(user.userType !== UserTypes.SUPPLIER) {
+                inventoryService.loadInventory(user.restaurantId, (inventory) => {
+                    setInventory(inventory);
+                    setItems(inventory.items);
+                });
+            }
+        });
     }, []);
 
     let onSearch = params => {
@@ -47,12 +52,29 @@ export const DashboardPage = props => {
                 <div className="panel">
                     <br/>
                     <div>
-                        <h1 className="ps-3 inter text-muted">Dashboard</h1>
+                        <h1 className="ps-5 inter text-muted fw-light">Dashboard</h1>
                         <ProductSearch onSearch={ params => setItems(onSearch(params))}/>
                     </div>
                 </div>
             </div>
-            <ProductList items={items}/>
+            {(inventory.restaurantId !== undefined) ? <ProductList items={items}/> :
+                <div>
+                    <center>
+                        <h2 className="mt-5 inter text-muted fw-bold">Inventory is Empty</h2>
+                        <h5 className="inter text-muted fw-light">Type a restaurant name and click the load button.</h5>
+                    </center>
+                </div>
+            }
+            {(inventory.restaurantId !== undefined && items.length === 0) ?
+                <div>
+                    <center>
+                        <h2 className="mt-5 inter text-muted fw-bold">No Products were Found</h2>
+                        <h5 className="inter text-muted fw-light">Try a different search term.</h5>
+                    </center>
+                </div>
+                : null
+            }
+
         </div>
     </>
 
