@@ -16,7 +16,24 @@ const getProducts = () => {
         return products;
     }).catch(err => {
         console.log(err.response);
-        return err.response;
+        return null;
+    });
+}
+
+const getProduct = (id) => {
+    return axios.get(`http://${url}:8000/product/` + id).then(res => {
+        console.log(res);
+        let data = res.data[0];
+        return new Product(
+            data.productID,
+            data.name,
+            data.description,
+            data.priceperunit,
+            data.image
+        );
+    }).catch(err => {
+        console.log(err.response);
+        return null;
     });
 }
 
@@ -77,6 +94,7 @@ const deleteProduct = (productId) => {
 
 export {
     getProducts,
+    getProduct,
     addProduct,
     updateProduct,
     deleteProduct

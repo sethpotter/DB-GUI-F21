@@ -18,6 +18,21 @@ const getRestaurantById = (id) => {
     });
 }
 
+const getRestaurantByName = (name) => {
+    let request = {
+        restaurantName: name
+    }
+
+    return axios.get(`http://${url}:8000/restaurant?` + toQuery(request)).then(res => {
+        let resData = res.data[0];
+        return new Restaurant(resData.restaurantID, name, resData.dateJoined, resData.active);
+    }).catch(err => {
+        console.log(err.response);
+        return null;
+    });
+}
+
 export {
-    getRestaurantById
+    getRestaurantById,
+    getRestaurantByName
 }

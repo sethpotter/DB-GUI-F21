@@ -340,7 +340,13 @@ module.exports = function routes(app, logger) {
     /********** Restaurant Routes **********/
 
     app.get('/restaurant', (req, res) => {
-        returnQuery(res, 'SELECT * FROM Restaurant');
+        let restaurantName = req.query.restaurantName;
+
+        if(restaurantName) {
+            returnQuery(res, 'SELECT * FROM Restaurant WHERE name = (?)', restaurantName);
+        } else {
+            returnQuery(res, 'SELECT * FROM Restaurant');
+        }
     });
 
     app.get('/restaurant/:restaurantId', (req, res) => {
