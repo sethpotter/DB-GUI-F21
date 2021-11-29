@@ -586,7 +586,7 @@ app.get('/allOrderDetails', function (req, res) {
 
 app.put('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("UPDATE InventoryTable SET stock=(?) WHERE restaurantID= (?)", [req.body.stock, req.body.restaurantID], function(err, result, fields){
+        con.query("UPDATE InventoryTable SET stock=(?) WHERE restaurantID= (?) AND productID =(?)", [req.body.stock, req.body.restaurantID, req.body.productID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
