@@ -4,10 +4,12 @@ import '../Styles/Popups.scss';
 import {min} from "@popperjs/core/lib/utils/math";
 import {UserService} from "../Services/UserService";
 import {UserTypes} from "../Models/User";
+import {InventoryService} from "../Services/InventoryService";
 
 const ProductPopup = props => {
 
     const userService = new UserService();
+    const inventoryService = new InventoryService();
 
     const [stock, setStock] = useState(props.item.stock);
     const [minStock, setMinStock] = useState(props.item.minStock);
@@ -17,12 +19,19 @@ const ProductPopup = props => {
     const onHide = () => {
         props.toggleShow();
 
-        if(pattern.test(stock))
-            props.item.stock = stock;
-        if(pattern.test(minStock))
-            props.item.minStock = minStock;
+        setStock(props.item.stock);
+        setMinStock(props.item.minStock);
+    }
 
-        // Parse to int then save.
+    const save = () => {
+        props.toggleShow();
+
+        if(pattern.test(stock))
+            props.item.stock = parseInt(stock);
+        if(pattern.test(minStock))
+            props.item.minStock = parseInt(minStock);
+
+        inventoryService.updateItem(props.item, () => {});
     }
 
     const isBelowMin = () => {
@@ -72,6 +81,11 @@ const ProductPopup = props => {
                                          disabled={(userService.getUser().userType !== UserTypes.SUPPLIER) ? true : false}
                                   />
                               </div>
+                          </div>
+                      </div>
+                      <div className="d-flex flex-row flex-grow-1 align-self-end">
+                          <div className="align-self-end">
+                              <button className="btn app-btn" onClick={() => save()}>Save</button>
                           </div>
                       </div>
                   </div>

@@ -23,10 +23,14 @@ export const DashboardPage = props => {
             console.log("Dashboard Loading User: ");
             console.log(user);
             if(user.userType !== UserTypes.SUPPLIER) {
-                if(!inventoryService.hasInventory()) // Should probably do the same for userService.
+                if(!inventoryService.hasInventory()) {
                     inventoryService.loadInventory(user.restaurantId, (inventory) => {
+                        console.log("Loaded Inventory");
                         setItems(inventory.items);
                     });
+                } else {
+                    setItems(inventoryService.getInventory().items);
+                }
             }
         });
     }, [items]);
