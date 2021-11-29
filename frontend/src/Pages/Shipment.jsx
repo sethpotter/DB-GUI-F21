@@ -3,13 +3,11 @@ import '../Styles/ShipmentsDeliveries.css';
 
 
 export class NewData extends React.Component {
-  // This is a separate thing, the Deliveries thing
-  // FIND A WAY TO ONLY ALLOW INTEGERS
 
   state = {
     availableItems: [], // put available items here
     item: "",
-    quantity: ""
+    quantity: 0
   };
   saveItem = (event) => {
     this.setState({ item: event.target.value });
@@ -18,11 +16,9 @@ export class NewData extends React.Component {
     this.setState({ quantity: event.target.value });
   };
   toProp = (event) => {
-    alert("Selected: " + this.state.item + " " + typeof this.state.quantity);
+    //if()
+    //alert("Selected: " + this.state.item + " " + typeof this.state.quantity);
     this.props.addNew(this.state.item, parseInt(this.state.quantity));
-  };
-  test = (event) => {
-    alert("Click worked");
   };
 
   render() {
@@ -49,7 +45,7 @@ export class NewData extends React.Component {
           />
           <br />
           {/*<input type="submit" value="Submit" class="submit-button" />*/}
-          <button type="button" onClick={this.toProp}>
+          <button type="button" className="btn btn-success" onClick={this.toProp}>
             Submit
           </button>
         </form>
@@ -65,20 +61,20 @@ export class FormComponentComponent extends React.Component {
   // this includes index number so integrate that
   ifNegative = () => {
     //call function to subtract the root prop
-    alert("whichOne: " + 0);
-    this.props.update(0, this.props.index);
-    //this.state.quantity = 4;
-    this.setState({quantity : this.state.quantity - 1});
+    if (this.state.quantity == 1) {
+      alert("Must have at least one!");
+    } else {
+      this.props.update(0, this.props.index);
+      this.setState({ quantity: this.state.quantity - 1 });
+    }
   }
   ifPositive = () => {
     //call function to add the root prop
-    alert("whichOne: " + 1);
     this.props.update(1, this.props.index);
-    //this.state.quantity = 8;
-    this.setState({quantity : this.state.quantity + 1});
+    this.setState({ quantity: this.state.quantity + 1 });
   }
   render() {
-    alert("Things have changed.");
+    //alert("Things have changed.");
     return (
       <tr>
         <td>{this.props.productName}</td>
@@ -116,19 +112,19 @@ export class FormComponent extends React.Component {
             </td>
           </tr>
         );*/
-        this.state.result.push(<FormComponentComponent 
+        this.state.result.push(<FormComponentComponent
           productName={this.props.productName[index]}
-          quantity = {this.props.quantity[index]}
-          index = {index}
-          update = {(whichOne, index) => this.props.updateQuantity(whichOne, index)}
+          quantity={this.props.quantity[index]}
+          index={index}
+          update={(whichOne, index) => this.props.updateQuantity(whichOne, index)}
         />);
         this.setState(this.state.result);
-        alert(
+        /*alert(
           "Product name: " +
           this.props.productName[index] +
           " Quantity: " +
           this.props.quantity[index]
-        );
+        );*/
       }
     }
     /*if(this.props.productName.length == 0){
@@ -196,17 +192,17 @@ export class Form extends React.Component {
       );
     }
     return (
-      <>
+      <div>
         <h1>Shipment Details</h1>
         <h2>Delivery To (Insert Javascript Here)</h2>
 
         <form>
-          <button>
+          <button className="btn btn-success">
             Clear Form
           </button>
           <br />
           <table>
-            <tr>
+            <tr className="table-header">
               <th>Product</th>
               <th>Quantity</th>
             </tr>
@@ -215,7 +211,7 @@ export class Form extends React.Component {
               quantity={this.state.quantities}
               clear={this.state.clear}
               updateQuantity={(whichOne, index) => {
-                alert("Type: " + typeof this.state.quantities[index]);
+                //alert("Type: " + typeof this.state.quantities[index]);
                 if (whichOne == 1) {
                   this.state.quantities[index]++;
                   this.setState(this.state.quantities);
@@ -226,16 +222,19 @@ export class Form extends React.Component {
               }}
             />
           </table>
+          <br />
           <button
             type="button"
+            className="btn btn-success"
             onClick={() => this.setState({ submitted: !this.state.submitted })}
+            style={{ marginRight: "1em" }}
           >
             Update Cart
           </button>
-          <input type="submit" value="Finalize Shipment" />
+          <input type="submit" className="btn btn-success" value="Finalize Shipment" />
           {tag}
         </form>
-      </>
+      </div>
     );
   }
 }
