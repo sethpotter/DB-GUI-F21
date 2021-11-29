@@ -95,12 +95,19 @@ export class InventoryService {
         }
     }
 
-    // TODO Add
-    changeStock() {
-        
+    updateItem(item, callback) {
+        let inventory = window.inventory;
+        if(inventory) {
+            updateInventoryItem(item, inventory.restaurantId).then((valid) => {
+                if(valid) {
+                    let index = inventory.items.findIndex(i => i.product.id === item.product.id);
+                    inventory.items[index] = item;
+                    console.log("Updated: ");
+                    console.log(item);
+                    callback();
+                }
+            });
+        }
     }
 
-    changeMinStock() {
-
-    }
 }

@@ -104,11 +104,6 @@ const deleteProduct = (productId) => {
     });
 }
 
-const blobToImage = (blob) => {
-    return new Promise(resolve => {
-    })
-}
-
 export {
     getProducts,
     getProduct,
