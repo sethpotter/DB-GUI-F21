@@ -19,7 +19,6 @@ export const Navbar = () => {
         'Deliveries' : '/deliveries'
     };
 
-    const [activePage, setActivePage] = useState(Object.keys(pages)[0]);
     const [user, setUser] = useState(new User(0, "", "", "", ""));
 
     const handleLogOut = () => {
@@ -27,11 +26,20 @@ export const Navbar = () => {
         navigate("/login");
     }
 
+    const handlePageSwitch = (name) => {
+        window.activePage = name;
+        navigate(pages[name]);
+    }
+
     useEffect(() => {
+        let page = Object.keys(pages).find(key => pages[key] === window.location.pathname);
+
+        if(page)
+            window.activePage = page;
+
         userService.loadUser((user) => {
             setUser(user);
         });
-
     }, [])
 
     return (
@@ -41,13 +49,12 @@ export const Navbar = () => {
                 <div>
                     {
                         Object.keys(pages).map((name, i) =>
-                            <a href={pages[name]}
-                               key={name}
-                               className={activePage === name ? 'btn nav-btn px-4 mx-4 active' : 'btn nav-btn px-4 mx-4'}
-                               onClick={ () => { setActivePage(name) }}
+                            <button key={name}
+                                    className={(window.activePage === name) ? 'btn nav-btn px-4 mx-4 active' : 'btn nav-btn px-4 mx-4'}
+                                    onClick={ () => {handlePageSwitch(name)}}
                             >
                                 {name}
-                            </a>
+                            </button>
                         )
                     }
                 </div>
