@@ -43,6 +43,10 @@ export const OrderPage = () => {
             });
     }
 
+    const handleSubmit = () => {
+
+    }
+
     return (
         <>
             <Navbar/>
@@ -113,7 +117,7 @@ export const OrderPage = () => {
                         <hr/>
                         <br/>
                         <div className="d-flex flex-row justify-content-end">
-                            <button type="button" className="btn app-btn inter" onClick={ () => {} }>Finalize Shipment</button>
+                            <button type="button" className="btn app-btn inter" onClick={() => handleSubmit()}>Finalize Shipment</button>
                         </div>
                     </div>
                 </div>
