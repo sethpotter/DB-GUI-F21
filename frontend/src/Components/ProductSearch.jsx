@@ -143,6 +143,7 @@ export const ProductSearch = props => {
                 </div>
                 {(userService.hasUser() && userService.getUser().userType === UserTypes.SUPPLIER) ? supplierControl : null}
             </div>
+            <br/>
         </>
     );
 };
