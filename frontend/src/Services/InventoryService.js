@@ -80,4 +80,8 @@ export class InventoryService {
     changeMinStock() {
 
     }
+
+    clear() {
+        window.inventory = undefined;
+    }
 }
