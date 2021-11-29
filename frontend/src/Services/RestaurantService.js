@@ -2,8 +2,10 @@ import {getRestaurantById, getRestaurantByName} from "../Api/RestaurantRoutes";
 
 export class RestaurantService {
 
-    loadRestaurant(id) {
-
+    loadRestaurant(id, callback) {
+        getRestaurantById(id).then((restaurant) => {
+            callback(restaurant);
+        });
     }
 
     loadRestaurantByName(name, callback) {

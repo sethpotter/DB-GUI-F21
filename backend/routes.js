@@ -342,6 +342,8 @@ module.exports = function routes(app, logger) {
     app.get('/restaurant', (req, res) => {
         let restaurantName = req.query.restaurantName;
 
+        console.log("GOTTEM");
+
         if(restaurantName) {
             returnQuery(res, 'SELECT * FROM Restaurant WHERE name = (?)', restaurantName);
         } else {
@@ -351,6 +353,12 @@ module.exports = function routes(app, logger) {
 
     app.get('/restaurant/:restaurantId', (req, res) => {
         let restaurantId = req.param('restaurantId');
+
+        if(!restaurantId || restaurantId === "null") {
+            res.status(400).send("RestaurantId is null");
+            return;
+        }
+
         returnQuery(res, 'SELECT * FROM Restaurant WHERE restaurantId = (?)', restaurantId);
     });
 
