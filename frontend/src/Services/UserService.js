@@ -3,11 +3,23 @@ import {getLoggedIn} from "../Api/UserRoutes";
 
 export class UserService {
 
-    loadUser(callback) {
-        if(window.user)
-            callback(window.user);
+    hasUser() {
+        return (this.getUser() !== null);
+    }
 
-        if(isLogin()) {
+    getUser() {
+        if(window.user)
+            return window.user;
+        else
+            return null;
+    }
+
+    setUser(user) {
+        window.user = user;
+    }
+
+    loadUser(callback) {
+        if (isLogin()) {
             getLoggedIn().then((user) => {
                 window.user = user;
                 callback(user);
@@ -16,6 +28,8 @@ export class UserService {
     }
 
     signOut() {
+        window.inventory = undefined;
+        window.user = undefined;
         sessionStorage.setItem("userId", null);
     }
 

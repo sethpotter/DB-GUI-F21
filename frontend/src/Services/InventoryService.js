@@ -17,6 +17,13 @@ export class InventoryService {
             return null;
     }
 
+    getProducts() {
+        if(window.products)
+            return window.products;
+        else
+            return null;
+    }
+
     loadProducts(callback) {
         if(window.products)
             callback(window.products);
