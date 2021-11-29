@@ -4,8 +4,7 @@ import { ProductList } from '../Components/ProductList';
 import { ProductSearch } from '../Components/ProductSearch';
 import { InventoryService } from "../Services/InventoryService";
 import { UserService } from "../Services/UserService";
-import { Inventory } from "../Models/Inventory";
-import {User, UserTypes} from "../Models/User";
+import {UserTypes} from "../Models/User";
 import "../Styles/Dashboard.scss";
 
 export const DashboardPage = props => {
@@ -14,22 +13,23 @@ export const DashboardPage = props => {
     const userService = new UserService();
 
     const [ items, setItems ] = useState([]); // Used for search
+    const [ user, setUser ] = useState(null); // only used for rerender
 
     useEffect(() => {
-        //if(inventoryService.hasInventory())
-        //    setItems(inventoryService.getInventory().items);
+
+        // This is a mess. I have no idea how react updates work
 
         userService.loadUser((user) => {
             console.log("Dashboard Loading User: ");
-            console.log(user);
+            console.log(userService.hasUser());
+            console.log(userService.getUser());
+            setUser(user);
             if(user.userType !== UserTypes.SUPPLIER) {
                 if(!inventoryService.hasInventory()) {
                     inventoryService.loadInventory(user.restaurantId, (inventory) => {
                         console.log("Loaded Inventory");
                         setItems(inventory.items);
                     });
-                } else {
-                    setItems(inventoryService.getInventory().items);
                 }
             }
         });
