@@ -342,8 +342,6 @@ module.exports = function routes(app, logger) {
     app.get('/restaurant', (req, res) => {
         let restaurantName = req.query.restaurantName;
 
-        console.log("GOTTEM");
-
         if(restaurantName) {
             returnQuery(res, 'SELECT * FROM Restaurant WHERE name = (?)', restaurantName);
         } else {
