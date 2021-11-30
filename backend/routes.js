@@ -606,7 +606,7 @@ app.post('/orderDetails', function(req, res){
     var productID = req.body.productID;
     var quantity = req.body.quantity;
     pool.getConnection(function (err, con){
-        con.query("INSERT INTO orderDetails(orderID, productID, quantity) VALUES((?), (?), (?))", [orderID, productID, quantity], function(err, result, fields){
+        con.query("INSERT INTO OrderDetails(orderID, productID, quantity) VALUES((?), (?), (?))", [orderID, productID, quantity], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
