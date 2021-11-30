@@ -19,6 +19,15 @@
   }
 }
 
+.deliveries-root {
+  background-color: whitesmoke;
+  height: 100vh;
+  .main-panel {
+    height: 100vh;
+    background-color: white;
+  }
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
