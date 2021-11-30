@@ -597,8 +597,12 @@ app.put('/inventoryTable', function(req, res){
 });
 
 app.post('/inventoryTable', function(req, res){
+    var restaurantID=req.body.restaurantID;
+    var productID= req.body.productID;
+    var stock= req.body.stock;
+    var minVal= req.body.minVal;
     pool.getConnection(function (err, con){
-        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock, minVal) VALUES((?), (?), (?), (?))", [req.body.restaurantID, req.body.productID, req.body.stock, req.body.minVal], function(err, result, fields){
+        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock, minVal) VALUES((?), (?), (?), (?))", [restaurantID, productID, stock, minVal], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
@@ -617,8 +621,10 @@ app.post('/orderDetails', function(req, res){
 });
 
 app.delete('/inventoryTable', function(req, res){
+    var restaurantID=req.body.restaurantID;
+    var productID= req.body.productID;
     pool.getConnection(function (err, con){
-        con.query("DELETE FROM InventoryTable WHERE restaurantID= (?) AND productID= (?)", [req.body.restaurantID, req.body.productID], function(err, result, fields){
+        con.query("DELETE FROM InventoryTable WHERE restaurantID=(?) AND productID=(?)", [restaurantID, productID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
