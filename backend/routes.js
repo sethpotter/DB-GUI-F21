@@ -595,7 +595,7 @@ app.put('/inventoryTable', function(req, res){
 
 app.post('/inventoryTable', function(req, res){
     pool.getConnection(function (err, con){
-        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock, minVal) VALUES((?), (?), (?))", [req.body.restaurantID, req.body.productID, req.body.stock, req.body.minVal], function(err, result, fields){
+        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock, minVal) VALUES((?), (?), (?), (?))", [req.body.restaurantID, req.body.productID, req.body.stock, req.body.minVal], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
