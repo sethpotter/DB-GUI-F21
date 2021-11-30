@@ -1,5 +1,7 @@
 import React from "react";
 import '../Styles/ShipmentsDeliveries.scss';
+import Order from "./Order"
+import { Navbar } from "../Components/Navbar";
 
 export const ChangeStatus = (props) => { // Select from 3 statuses with select menu
     return (
@@ -72,7 +74,7 @@ export class Deliveries extends React.Component {
     // TO DO:
     // Statuses set to 3 options
     state = {
-        // shipment stuff, all the same length
+        // map orders
         ids: [3809080, 1083159],
         items: ["Blue Dream, Lucky Charms, Strawberry Sugar", "D8 Bulk"],
         statuses: ["Gucci", "Also Gucci"],
@@ -110,10 +112,15 @@ export class Deliveries extends React.Component {
         //this.getShipments();
         return (
             <>
-                <h1>Deliveries</h1>
-                <p>Track your deliveries.</p>
-                {displayShipments}
-                {this.state.changeStatus}
+                <Navbar />
+                <div className="deliveries-root">
+                    <div className="container main-panel">
+                        <h1>Deliveries</h1>
+                        <p>Track your deliveries.</p>
+                        {displayShipments}
+                        {this.state.changeStatus}
+                    </div>
+                </div>
             </>
         );
     }
