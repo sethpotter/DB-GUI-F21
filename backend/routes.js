@@ -602,7 +602,7 @@ app.post('/inventoryTable', function(req, res){
     var productID= req.body.productID;
     var stock= req.body.stock;
     var minVal= req.body.minVal;
-        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock, minVal) VALUES((?), (?), (?), (?))", [restaurantID, productID, stock, minVal], function(err, result, fields){
+        con.query("INSERT INTO InventoryTable(restaurantID, productID, stock, minVal) VALUES(?, ?, ?, ?)", [restaurantID, productID, stock, minVal], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
 	});
