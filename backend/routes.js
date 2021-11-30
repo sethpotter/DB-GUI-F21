@@ -585,10 +585,10 @@ app.get('/allOrderDetails', function (req, res) {
 });
 
 app.put('/inventoryTable', function(req, res){
-    var stock = req.body.stock;
+    pool.getConnection(function (err, con){
+      var stock = req.body.stock;
     var restaurantID = req.body.restaurantID;
     var productID = req.body.productID;
-    pool.getConnection(function (err, con){
         con.query("UPDATE InventoryTable SET stock=(?) WHERE restaurantID= (?) AND productID =(?)", [stock, restaurantID, productID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
@@ -597,11 +597,11 @@ app.put('/inventoryTable', function(req, res){
 });
 
 app.post('/inventoryTable', function(req, res){
-    var restaurantID=req.body.restaurantID;
+    pool.getConnection(function (err, con){
+      var restaurantID=req.body.restaurantID;
     var productID= req.body.productID;
     var stock= req.body.stock;
     var minVal= req.body.minVal;
-    pool.getConnection(function (err, con){
         con.query("INSERT INTO InventoryTable(restaurantID, productID, stock, minVal) VALUES((?), (?), (?), (?))", [restaurantID, productID, stock, minVal], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
@@ -609,10 +609,10 @@ app.post('/inventoryTable', function(req, res){
     });
 });
 app.post('/orderDetails', function(req, res){
-    var orderID = req.body.orderID;
-    var productID = req.body.productID;
-    var quantity = req.body.quantity;
     pool.getConnection(function (err, con){
+      var orderID = req.body.orderID;
+      var productID = req.body.productID;
+      var quantity = req.body.quantity;
         con.query("INSERT INTO OrderDetails(orderID, productID, quantity) VALUES((?), (?), (?))", [orderID, productID, quantity], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
@@ -621,9 +621,9 @@ app.post('/orderDetails', function(req, res){
 });
 
 app.delete('/inventoryTable', function(req, res){
-    var restaurantID=req.body.restaurantID;
-    var productID= req.body.productID;
     pool.getConnection(function (err, con){
+      var restaurantID=req.body.restaurantID;
+      var productID= req.body.productID;
         con.query("DELETE FROM InventoryTable WHERE restaurantID=(?) AND productID=(?)", [restaurantID, productID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
