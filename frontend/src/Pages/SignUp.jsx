@@ -65,7 +65,7 @@ const SignUpPage = ({ handleClose }) => {
             <TextField
                 label="Confirm Password"
                 variant="filled"
-                type="conPassword"
+                type="password"
                 required
                 value={conPassword}
                 onChange={temp => setConPassword(temp.target.value)}
