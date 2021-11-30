@@ -585,10 +585,10 @@ app.get('/allOrderDetails', function (req, res) {
 });
 
 app.put('/inventoryTable', function(req, res){
+    var stock = req.body.stock;
+    var restaurantID = req.body.restaurantID;
+    var productID = req.body.productID;
     pool.getConnection(function (err, con){
-        var stock = req.body.stock;
-        var restaurantID = req.body.restaurantID;
-        var productID = req.body.productID;
         con.query("UPDATE InventoryTable SET stock=(?) WHERE restaurantID= (?) AND productID =(?)", [stock, restaurantID, productID], function(err, result, fields){
             if(err) throw err;
             res.end(JSON.stringify(result));
