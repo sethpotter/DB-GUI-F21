@@ -20,8 +20,6 @@ export const OrderPage = () => {
     const restaurantService = new RestaurantService();
     const userService = new UserService();
 
-    // TODO Handle supplier somehow
-
     useEffect(() => {
         inventoryService.loadProducts(() => {
             userService.loadUser((user) => {
