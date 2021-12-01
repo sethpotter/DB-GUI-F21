@@ -2,6 +2,9 @@ import React, {useState, useEffect} from "react";
 import '../Styles/ShipmentsDeliveries.scss';
 import Order from "./Order"
 import { Navbar } from "../Components/Navbar";
+import {OrderService} from "../Services/OrderService";
+import {getOrder} from "../Api/ShipmentRoutes";
+import {UserService} from "../Services/UserService";
 
 export const ChangeStatus = (props) => { // Select from 3 statuses with select menu
     return (
@@ -75,6 +78,24 @@ export class DeliveryComponent extends React.Component {
     }
 }
 export class Deliveries extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.orderService = new OrderService();
+        this.userService = new UserService();
+    }
+
+    componentDidMount() {
+        this.userService.loadUser((user) => {
+            this.user = user;
+            this.orderService.loadOrders(user.restaurantId, (orders) => {
+                console.log("Loaded Orders!!:");
+                console.log(orders);
+            });
+        });
+    }
+
     // TO DO:
     // Statuses set to 3 options
     state = {
@@ -87,10 +108,6 @@ export class Deliveries extends React.Component {
         // rows to be printed
         rows: []
     };
-
-    getOrders = () => {
-        // do routing shit here
-    }
 
     getDates = () => {
         // maybe update with exact date of order later?
@@ -139,10 +156,12 @@ export class Deliveries extends React.Component {
                 <Navbar />
                 <div className="deliveries-root">
                     <div className="container main-panel">
-                        <h1>Deliveries</h1>
-                        <p>Track your deliveries.</p>
-                        {displayShipments}
-                        {this.state.changeStatus}
+                        <h1 className="ms-5 pt-4 inter text-muted fw-light">Deliveries</h1>
+                        <h5 className="ms-5 mb-5 inter">Track your deliveries.</h5>
+                        <div className="p-5 panel-border panel-round mx-5">
+                            {displayShipments}
+                            {this.state.changeStatus}
+                        </div>
                     </div>
                 </div>
             </>
