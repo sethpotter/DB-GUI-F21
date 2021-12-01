@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import '../Styles/ShipmentsDeliveries.scss';
 import Order from "./Order"
 import { Navbar } from "../Components/Navbar";
@@ -19,11 +19,12 @@ export class DeliveryComponent extends React.Component {
     //Once status changes notify the supplier
     //Integrate adding shipments
     state = {
-        button: "▼",
         rowHeightState: "expanded",
         status: <>{this.props.status}</>,
         proxyStatus: '',
-        statusStatus: "Edit Status"
+        statusStatus: "Edit Status",
+        date: this.props.date[2] + "-" + this.props.date[1] + "-" + this.props.date[0],
+        canEditDate: <>readonly</>
     };
 
     editStatus = () => {
@@ -51,20 +52,23 @@ export class DeliveryComponent extends React.Component {
             }
         }
     }
-    switchArrow = () => {
-        if (this.state.button == "▼") {
-            this.setState({ button: "▲" });
-        } else {
-            this.setState({ button: "▼" });
-        }
-    }
     render() {
-        let status = <></>;
+        var dateThing;
+        if(this.props.accessor == "supplier"){
+            dateThing = <input type="date" id="start"
+            min={this.state.date}
+            />;
+        }else{
+            dateThing = <input type="date" id="start"
+            min={this.state.date}
+            />;
+        }
 
         return (
             <tr>
                 <td>{this.props.id}</td>
                 <td>{this.props.item} {/*<button type="button" className={this.state.rowHeightState} onClick={this.switchArrow}>{this.state.button}</button>*/}</td>
+                <td>{dateThing}</td>
                 <td>{this.state.status} <button type="button" className="btn btn-success" onClick={this.editStatus}>{this.state.statusStatus}</button></td>
             </tr>
         );
@@ -78,10 +82,28 @@ export class Deliveries extends React.Component {
         ids: [3809080, 1083159],
         items: ["beer", "wine"],
         statuses: ["Gucci", "Also Gucci"],
+        dates: [[(new Date()).getDate(), ((new Date()).getMonth()+1), ((new Date()).getFullYear())], 
+        [(new Date()).getDate(), ((new Date()).getMonth()+1), ((new Date()).getFullYear())]],
         // rows to be printed
         rows: []
     };
+
+    getOrders = () => {
+        // do routing shit here
+    }
+
+    getDates = () => {
+        // maybe update with exact date of order later?
+        var today = new Date();
+        var todayValue = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        var newDates = [];
+        for(let index in this.state.ids){
+            newDates.push(todayValue);
+        }
+        this.setState({dates : newDates});
+    }
     render() {
+        //this.getDates();
         let displayShipments = <></>;
         if (this.state.ids.length == 0) {
             displayShipments = <h1>Add some shipments first!</h1>
@@ -91,6 +113,7 @@ export class Deliveries extends React.Component {
                     this.state.rows.push(<DeliveryComponent id={this.state.ids[index]}
                         item={this.state.items[index]}
                         status={this.state.statuses[index]}
+                        date={this.state.dates[index]}
                         index={index}
                         changeStatus={(status, index) => {
                             this.state.statuses[index] = status;
@@ -104,6 +127,7 @@ export class Deliveries extends React.Component {
                     <tr className="table-header table-header-deliveries">
                         <th>Shipment ID</th>
                         <th>Items</th>
+                        <th>Date</th>
                         <th>Status</th>
                     </tr>
                     {this.state.rows}
