@@ -4,7 +4,6 @@ import {Product} from "../Models/Product";
 import {toQuery} from "../Util/utils";
 
 /// TODO Deal with OrderDetails and Orders here. Merge these
-
 /**
  * Adds an order to the order table.
  * @param order
@@ -12,6 +11,7 @@ import {toQuery} from "../Util/utils";
  */
 const addOrder = (order) => {
     let request = {
+        orderId: order.id,
         orderDate: order.orderDate,
         shippedDate: order.shippedDate,
         arrivalDate: order.arrivalDate,
@@ -22,7 +22,17 @@ const addOrder = (order) => {
 
     return axios.post(`http://${url}:8000/order?` + toQuery(request)).then(res => {
         console.log(res);
-        return true;
+
+        let promiseArr = [];
+        for(const i of order.items)
+            promiseArr.push(addOrderDetail(order.id, i.product, i.stock));
+
+        Promise.all(promiseArr).then(() => {
+            return true;
+        }).catch((err) => {
+            console.log(err);
+            return false;
+        });
     }).catch(err => {
         console.log(err.response);
         return false;
@@ -44,7 +54,57 @@ const updateOrder = (order) => {
         delivered: order.delivered
     };
 
-    return axios.put(`http://${url}:8000/order/${order.id}?` + toQuery(request)).then(res => {
+    deleteOrderDetail(order.id).then(() => {
+        return axios.put(`http://${url}:8000/order/${order.id}?` + toQuery(request)).then(res => {
+            console.log(res);
+
+            let promiseArr = [];
+            for(const i of order.items)
+                promiseArr.push(addOrderDetail(order.id, i.product, i.stock));
+
+            Promise.all(promiseArr).then(() => {
+                return true;
+            }).catch((err) => {
+                console.log(err);
+                return false;
+            });
+        }).catch(err => {
+            console.log(err.response);
+            return false;
+        });
+    });
+}
+
+const deleteOrder = (order) => {
+    deleteOrderDetail(order.id).then(() => {
+        return axios.delete(`http://${url}:8000/order/` + order.id).then(res => {
+            console.log(res);
+            return true;
+        }).catch(err => {
+            console.log(err.response);
+            return false;
+        });
+    });
+}
+
+const getOrder = (orderId) => {
+    return axios.get(`http://${url}:8000/order/` + orderId).then(res => {
+        console.log(res);
+        return res.data[0];
+    }).catch(err => {
+        console.log(err.response);
+        return null;
+    });
+}
+
+const addOrderDetail = (orderId, product, quantity) => {
+    let request = {
+        orderId: orderId,
+        productId: product.id,
+        quantity: quantity
+    };
+
+    return axios.post(`http://${url}:8000/orderDetails?` + toQuery(request)).then(res => {
         console.log(res);
         return true;
     }).catch(err => {
@@ -53,8 +113,35 @@ const updateOrder = (order) => {
     });
 }
 
-const deleteOrder = (orderId) => {
-    return axios.delete(`http://${url}:8000/order/` + orderId).then(res => {
+const updateOrderDetail = (orderId, product, quantity) => {
+    let request = {
+        orderId: orderId,
+        productId: product.id,
+        quantity: quantity
+    };
+
+    return axios.put(`http://${url}:8000/orderDetails?` + toQuery(request)).then(res => {
+        console.log(res);
+        return true;
+    }).catch(err => {
+        console.log(err.response);
+        return false;
+    });
+}
+
+/**
+ * Leave off product to delete all products associated with an orderId
+ * @param orderId
+ * @param product
+ * @returns {Promise<boolean>}
+ */
+const deleteOrderDetail = (orderId, product) => {
+    let request = {
+        orderId: orderId,
+        productId: (product !== undefined) ? product.id : null
+    };
+
+    return axios.delete(`http://${url}:8000/orderDetails?` + toQuery(request)).then(res => {
         console.log(res);
         return true;
     }).catch(err => {
@@ -66,5 +153,9 @@ const deleteOrder = (orderId) => {
 export {
     addOrder,
     updateOrder,
-    deleteOrder
+    deleteOrder,
+    getOrder,
+    addOrderDetail,
+    updateOrderDetail,
+    deleteOrderDetail
 }
