@@ -26,7 +26,7 @@ const addOrder = (order) => {
 
         let promiseArr = [];
         for(const i of order.items)
-            promiseArr.push(addOrderDetail(order.id, i.product, i.stock));
+            promiseArr.push(addOrderDetail(order.id, i.product, i.quantity));
 
         Promise.all(promiseArr).then(() => {
             return true;
@@ -61,7 +61,7 @@ const updateOrder = (order) => {
 
             let promiseArr = [];
             for(const i of order.items)
-                promiseArr.push(addOrderDetail(order.id, i.product, i.stock));
+                promiseArr.push(addOrderDetail(order.id, i.product, i.quantity));
 
             Promise.all(promiseArr).then(() => {
                 return true;
