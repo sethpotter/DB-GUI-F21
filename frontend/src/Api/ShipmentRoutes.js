@@ -2,6 +2,7 @@ import axios from "axios";
 import {url} from "../Util/url";
 import {Product} from "../Models/Product";
 import {toQuery} from "../Util/utils";
+import {Shipment} from "../Models/Shipment";
 
 /// TODO Deal with OrderDetails and Orders here. Merge these
 /**
@@ -90,7 +91,29 @@ const deleteOrder = (order) => {
 const getOrder = (orderId) => {
     return axios.get(`http://${url}:8000/order/` + orderId).then(res => {
         console.log(res);
-        return res.data[0];
+        let data = res.data[0];
+        let order = new Shipment(data.orderID,
+                                 data.orderDate,
+                                 data.sentDate,
+                                 data.estArrival,
+                                 data.address,
+                                 data.carrier,
+                                 data.delivered,
+                                 data.RestaurantID,
+                                 []
+        );
+
+        return getOrderDetail(order.id).then((itemsData) => {
+            for(const i of itemsData) {
+                order.items.push({productId: i.productID, quantity: i.quantity});
+            }
+            console.log(order.items);
+
+            return order;
+        }).catch(err => {
+            console.log(err.response);
+            return null;
+        });
     }).catch(err => {
         console.log(err.response);
         return null;
