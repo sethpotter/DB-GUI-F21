@@ -32,8 +32,8 @@ const returnQuery = (res, query, fields) => {
     });
 }
 
-const checkParam = (param) => {
-    return (!param || param === null || param === "null");
+const badParam = (param) => {
+    return (!param || param === null || param === "null" || param === "undefined");
 }
 
 module.exports = function routes(app, logger) {
@@ -114,15 +114,20 @@ module.exports = function routes(app, logger) {
 
     /********** OrderDetails Routes **********/
 
-    // GET All OrderDetails // TODO Test
+    // GET OrderDetails
     app.get('/orderDetails', (req, res) => {
-        returnQuery(res, 'SELECT * FROM OrderDetails');
-    });
+        let rq = req.query;
+        let fields = [rq.orderId, rq.productId];
 
-    // GET OrderDetails via orderId // TODO Test
-    app.get('/orderDetails/:orderId', (req, res) => {
-        let orderId = req.param('orderId');
-        returnQuery(res, 'SELECT * FROM OrderDetails WHERE orderId = (?)', orderId);
+        if(badParam(rq.orderId)) {
+            returnQuery(res, 'SELECT * FROM OrderDetails'); // All details
+        } else {
+            if (badParam(rq.productId)) {
+                returnQuery(res, 'SELECT * FROM OrderDetails WHERE orderId = (?)', fields);
+            } else {
+                returnQuery(res, 'SELECT * FROM OrderDetails WHERE orderId = (?) AND productID = (?)', fields);
+            }
+        }
     });
 
     // POST OrderDetails
@@ -137,7 +142,7 @@ module.exports = function routes(app, logger) {
         let rq = req.query;
         let fields = [rq.quantity, rq.orderId, rq.productId];
 
-        if(checkParam(rq.orderId) || checkParam(rq.productId)) {
+        if(badParam(rq.orderId) || badParam(rq.productId)) {
             res.status(400).send("Missing productId or orderId");
             return;
         }
@@ -150,12 +155,12 @@ module.exports = function routes(app, logger) {
         let rq = req.query;
         let fields = [rq.orderId, rq.productId];
 
-        if(checkParam(rq.orderId)) {
+        if(badParam(rq.orderId)) {
             res.status(400).send("Missing orderId");
             return;
         }
 
-        if(checkParam(rq.productId))
+        if(badParam(rq.productId))
             returnQuery(res, 'DELETE FROM OrderDetails WHERE orderId = (?)', fields);
         else
             returnQuery(res, 'DELETE FROM OrderDetails WHERE orderId = (?) AND productId = (?)', fields);

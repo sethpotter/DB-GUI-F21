@@ -97,10 +97,10 @@ const getOrder = (orderId) => {
     });
 }
 
-const addOrderDetail = (orderId, product, quantity) => {
+const addOrderDetail = (orderId, productId, quantity) => {
     let request = {
         orderId: orderId,
-        productId: product.id,
+        productId: productId,
         quantity: quantity
     };
 
@@ -113,10 +113,10 @@ const addOrderDetail = (orderId, product, quantity) => {
     });
 }
 
-const updateOrderDetail = (orderId, product, quantity) => {
+const updateOrderDetail = (orderId, productId, quantity) => {
     let request = {
         orderId: orderId,
-        productId: product.id,
+        productId: productId,
         quantity: quantity
     };
 
@@ -132,13 +132,13 @@ const updateOrderDetail = (orderId, product, quantity) => {
 /**
  * Leave off product to delete all products associated with an orderId
  * @param orderId
- * @param product
+ * @param productId
  * @returns {Promise<boolean>}
  */
-const deleteOrderDetail = (orderId, product) => {
+const deleteOrderDetail = (orderId, productId) => {
     let request = {
         orderId: orderId,
-        productId: (product !== undefined) ? product.id : null
+        productId: productId
     };
 
     return axios.delete(`http://${url}:8000/orderDetails?` + toQuery(request)).then(res => {
@@ -150,6 +150,21 @@ const deleteOrderDetail = (orderId, product) => {
     });
 }
 
+const getOrderDetail = (orderId, productId) => {
+    let request = {
+        orderId: orderId,
+        productId: productId
+    };
+
+    return axios.get(`http://${url}:8000/orderDetails?` + toQuery(request)).then(res => {
+        console.log(res);
+        return res.data;
+    }).catch(err => {
+        console.log(err.response);
+        return null;
+    });
+}
+
 export {
     addOrder,
     updateOrder,
@@ -157,5 +172,6 @@ export {
     getOrder,
     addOrderDetail,
     updateOrderDetail,
-    deleteOrderDetail
+    deleteOrderDetail,
+    getOrderDetail
 }
