@@ -32,6 +32,10 @@ const returnQuery = (res, query, fields) => {
     });
 }
 
+const badParam = (param) => {
+    return (!param || param === null || param === "null" || param === "undefined");
+}
+
 module.exports = function routes(app, logger) {
 
     app.get('/', (req, res) => {
@@ -79,17 +83,23 @@ module.exports = function routes(app, logger) {
         returnQuery(res, 'SELECT * FROM `Order`');
     });
 
+    // GET All Orders
+    app.get('/order/:orderId', (req, res) => {
+        let orderId = req.param('orderId');
+        returnQuery(res, 'SELECT * FROM `Order` WHERE orderID = (?)', orderId);
+    });
+
     // POST Order
     app.post('/order', (req, res) => {
-        let query = 'INSERT INTO `Order`(orderDate, deliveryAddress, carrier, sentDate, estArrival, delivered, restaurantId) VALUES (?,?,?,?,?,?,?)';
+        let query = 'INSERT INTO `Order`(orderDate, deliveryAddress, carrier, sentDate, estArrival, delivered, restaurantID) VALUES (?,?,?,?,?,?,?)';
         let rq = req.query;
         let fields = [rq.orderDate, rq.address, rq.carrier, rq.shippedDate, rq.arrivalDate, rq.delivered, rq.restaurantId];
         returnQuery(res, query, fields);
     });
 
-    // PUT Order via OrderId // TODO Partially works. RestaurantID doesn't update.
+    // UPDATE Order
     app.put('/order/:orderId', (req, res) => {
-        let query = 'UPDATE `Order` SET orderDate = (?), deliveryAddress = (?), carrier = (?), sentDate = (?), estArrival = (?), delivered = (?), restaurantId = (?) WHERE orderId = (?)';
+        let query = 'UPDATE `Order` SET orderDate = (?), deliveryAddress = (?), carrier = (?), sentDate = (?), estArrival = (?), delivered = (?), restaurantID = (?) WHERE orderID = (?)';
         let orderId = req.param('orderId');
         let rq = req.query;
         let fields = [rq.orderDate, rq.address, rq.carrier, rq.shippedDate, rq.arrivalDate, rq.delivered, rq.restaurantId, orderId];
@@ -104,33 +114,56 @@ module.exports = function routes(app, logger) {
 
     /********** OrderDetails Routes **********/
 
-    // GET All OrderDetails // TODO Test
+    // GET OrderDetails
     app.get('/orderDetails', (req, res) => {
-        returnQuery(res, 'SELECT * FROM OrderDetails');
-    });
-
-    // GET OrderDetails via orderId // TODO Test
-    app.get('/orderDetails/:orderId', (req, res) => {
-        let orderId = req.param('orderId');
-        returnQuery(res, 'SELECT * FROM OrderDetails WHERE orderId = (?)', orderId);
-    });
-
-    // TODO Add post
-
-    // UPDATE OrderDetails via orderId and productId // TODO Test
-    app.put('/orderDetails/:orderId', (req, res) => {
-        let orderId = req.param('orderId');
         let rq = req.query;
-        let fields = [rq.quantity, orderId, rq.productId];
-        returnQuery(res, 'UPDATE OrderDetails SET quantity = (?) WHERE orderId = (?) AND productId = (?)', fields);
+        let fields = [rq.orderId, rq.productId];
+
+        if(badParam(rq.orderId)) {
+            returnQuery(res, 'SELECT * FROM OrderDetails'); // All details
+        } else {
+            if (badParam(rq.productId)) {
+                returnQuery(res, 'SELECT * FROM OrderDetails WHERE orderId = (?)', fields);
+            } else {
+                returnQuery(res, 'SELECT * FROM OrderDetails WHERE orderId = (?) AND productID = (?)', fields);
+            }
+        }
     });
 
-    // DELETE OrderDetails via orderId and productId // TODO Test
-    app.delete('/orderDetails/:orderId', (req, res) => {
-        let orderId = req.param('orderId');
+    // POST OrderDetails
+    app.post('/orderDetails', (req, res) => {
         let rq = req.query;
-        let fields = [orderId, rq.productId];
-        returnQuery(res, 'DELETE FROM OrderDetails WHERE orderId = (?) AND productId = (?)', fields);
+        let fields = [rq.orderId, rq.productId, rq.quantity];
+        returnQuery(res, 'INSERT INTO OrderDetails(orderID, productID, quantity) VALUES (?,?,?)', fields);
+    });
+
+    // UPDATE OrderDetails via orderId and productId
+    app.put('/orderDetails', (req, res) => {
+        let rq = req.query;
+        let fields = [rq.quantity, rq.orderId, rq.productId];
+
+        if(badParam(rq.orderId) || badParam(rq.productId)) {
+            res.status(400).send("Missing productId or orderId");
+            return;
+        }
+
+        returnQuery(res, 'UPDATE OrderDetails SET quantity = (?) WHERE orderID = (?) AND productID = (?)', fields);
+    });
+
+    // DELETE OrderDetails via orderId or with productId
+    app.delete('/orderDetails', (req, res) => {
+        let rq = req.query;
+        let fields = [rq.orderId, rq.productId];
+
+        if(badParam(rq.orderId)) {
+            res.status(400).send("Missing orderId");
+            return;
+        }
+
+        if(badParam(rq.productId))
+            returnQuery(res, 'DELETE FROM OrderDetails WHERE orderId = (?)', fields);
+        else
+            returnQuery(res, 'DELETE FROM OrderDetails WHERE orderId = (?) AND productId = (?)', fields);
     });
 
     /********** User Routes **********/
