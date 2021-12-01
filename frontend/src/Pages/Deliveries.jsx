@@ -76,7 +76,7 @@ export class Deliveries extends React.Component {
     state = {
         // map orders
         ids: [3809080, 1083159],
-        items: ["Blue Dream, Lucky Charms, Strawberry Sugar", "D8 Bulk"],
+        items: ["beer", "wine"],
         statuses: ["Gucci", "Also Gucci"],
         // rows to be printed
         rows: []
